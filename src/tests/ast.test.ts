@@ -12,12 +12,23 @@ test('variable', () => {
 });
 
 test('abstraction', () => {
-    expect(parse("a:Integer=>23", {})).toStrictEqual(
+    expect(parse("a=>23", {})).toStrictEqual(
         new Abstraction(
             'a',
-            new Variable ('Integer'),
             new Application (
-              new Variable('integer' ),
+              new Variable('int' ),
+              new Data('23')
+            )
+        )
+    );
+});
+
+test('application', () => {
+    expect(parse("a 23", {})).toStrictEqual(
+        new Application(
+            new Variable('a'),
+            new Application (
+              new Variable('int'),
               new Data('23')
             )
         )

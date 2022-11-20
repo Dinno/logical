@@ -3,4 +3,7 @@
 .pnp.*
 
 # generated
-src/generated
+/src/generated
+
+# build
+/build

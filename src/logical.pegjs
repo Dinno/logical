@@ -7,23 +7,26 @@ start
     = _ expr:expr _ { return expr; }
 
 expr "expression"
-    = abstraction / integer / var
+    = fexpr / application / integer
 
-abstraction "function definition"
-    = name: name _ ":" _ type: (kind / expr) _ ("=>" / ";") _ body: expr { return new Abstraction(name, body, [createTypeAttr(type)]) }
-    = name: name _ ("=>" / ";") _ body: expr {return new Abstraction(name, body, [])}
+fexpr "functional expression"
+    = abstraction / var
 
 application "function application"
-    = func: expr _ arg: expr {return new Application(func, arg)}
+    = r: applicationRec { r.reverse() } 
+
+applicationRec "function application"
+    = func: fexpr _ arg: expr {return new Application(func, arg)}
+
+abstraction "function definition"
+    = name: name _ ("=>" / ";") _ body: expr {return new Abstraction(name, body, [])}
+    //= name: name _ ":" _ type: (kind / expr) _ ("=>" / ";") _ body: expr { return new Abstraction(name, body, [createTypeAttr(type)]) }
 
 integer "integer number"
     = [0-9]+ {return createInteger(text())}
 
 var "variable name"
     = name: name { return new Variable(name)}
-
-kind "kind"
-    = "TYPE" { return new Kind(); }
 
 name "name"
     = $([a-z_]i+ [a-z0-9_]i*)
