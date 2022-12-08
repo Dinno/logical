@@ -13,6 +13,6 @@ fs.writeFileSync("src/generated/parser.js", parser);
 import { parse } from "./generated/parser"
 
 console.log(parse(`
-a:TYPE;
+a;
 ab
 `, {}));

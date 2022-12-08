@@ -1,3 +1,3 @@
 import { Application, Data, Variable } from "./formalTree"
 
-export const createInteger = (value: string) => new Application(new Variable("integer"), new Data(value));
+export const createInteger = (value: string) => new Application(new Variable("int"), new Data(value));

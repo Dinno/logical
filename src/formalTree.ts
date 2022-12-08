@@ -24,13 +24,11 @@ export class Application extends Expression {
 export class Abstraction extends Expression {
     param: string;
     body: Expression;
-    type: Expression;
 
-    constructor(param: string, type: Expression, body: Expression) {
+    constructor(param: string, body: Expression) {
         super();
         this.param = param;
         this.body = body;
-        this.type = type;
     }
 }
 
