@@ -3,4 +3,5 @@
 .pnp.*
 
 # generated
-src/generated
+/src/generated
+/doc/out
