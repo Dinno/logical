@@ -10,3 +10,7 @@ src/generated
 
 # docs
 /doc/out
+
+# C#
+
+obj
