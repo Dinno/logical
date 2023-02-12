@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicalParser", "LogicalPar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logical", "Logical\Logical.csproj", "{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "ParserTests\ParserTests.csproj", "{0B3BDA92-AB7B-4D42-B6AF-29D499574031}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FSOntology.vsmdi
@@ -24,6 +26,10 @@ Global
 		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

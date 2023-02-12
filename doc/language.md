@@ -1,15 +1,13 @@
 On the level of model the language consists of following basic constructions:
 
-1. (?)Literals
-2. Variables
-3. Function definitions
-4. Function applications
-   //5. Function types
+1. Variables
+2. Function definitions
+3. Function applications
 
-But on syntactical level it has additional constructions such as:
+But on syntactical level it has additional constructions:
 
 1. Operators
-2.
+2. Literals
 
 ## Literals
 
@@ -25,11 +23,3 @@ x, X, var1, \_a - alfanumeric string (?) representing reference to variables wit
 
 f 1, someFunction(1, x) - Application of function to some value. In second example the
 value is tuple. Generates model: @a(а, 1), @a(someFunction, x) where @a is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
-
-
-
-
-
-
-
-

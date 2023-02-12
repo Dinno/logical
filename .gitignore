@@ -13,4 +13,5 @@ src/generated
 
 # C#
 
-obj
+/**/obj/
+/**/bin/
