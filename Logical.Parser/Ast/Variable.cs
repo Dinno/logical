@@ -4,24 +4,21 @@ public class Variable : Node
 {
     public readonly string Name;
 
-    public Variable(string name, Node? annotation) : base(annotation)
+    public Variable(string name, Node? annotation = null) : base(annotation)
     {
         Name = name;
     }
 
-    protected bool Equals(Variable other)
-    {
-        return base.Equals(other) && Name == other.Name;
-    }
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj))
             return false;
         if (ReferenceEquals(this, obj))
             return true;
-        if (obj.GetType() != this.GetType())
+        if (obj.GetType() != GetType())
             return false;
-        return Equals((Variable)obj);
+        var other = (Variable)obj;
+        return Name == other.Name;
     }
     public override int GetHashCode()
     {

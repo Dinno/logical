@@ -2,28 +2,25 @@
 
 public class Application : Node
 {
-    public Node Function;
-    public Node Argument;
+    public readonly Node Function;
+    public readonly Node Argument;
 
-    public Application(Node function, Node argument, Node? annotation) : base(annotation)
+    public Application(Node function, Node argument, Node? annotation = null) : base(annotation)
     {
         Function = function;
         Argument = argument;
     }
 
-    protected bool Equals(Application other)
-    {
-        return base.Equals(other) && Function.Equals(other.Function) && Argument.Equals(other.Argument);
-    }
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj))
             return false;
         if (ReferenceEquals(this, obj))
             return true;
-        if (obj.GetType() != this.GetType())
+        if (obj.GetType() != GetType())
             return false;
-        return Equals((Application)obj);
+        var other = (Application)obj;
+        return Function.Equals(other.Function) && Argument.Equals(other.Argument);
     }
     public override int GetHashCode()
     {
