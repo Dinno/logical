@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>LogicalParser</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,11 +13,7 @@
 
     <ItemGroup>
       <None Remove="MathGrammar" />
-      <PegGrammar Include="Expression.peg.g" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Model" />
+      <PegGrammar Include="Expression.peg" />
     </ItemGroup>
 
 </Project>

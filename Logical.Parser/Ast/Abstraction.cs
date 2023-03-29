@@ -4,18 +4,17 @@ public class Abstraction : Node
 {
     public readonly string VariableName;
     public readonly Node Body;
+    public readonly Node? Type;
+    public bool IsUnbound;
 
-    public Abstraction(string variableName, Node body, Node? annotation)
+    public Abstraction(string variableName, Node body, Node? type = null, Node? annotation = null)
         : base(annotation)
     {
         VariableName = variableName;
         Body = body;
+        Type = type;
     }
 
-    protected bool Equals(Abstraction other)
-    {
-        return base.Equals(other) && VariableName == other.VariableName && Body.Equals(other.Body);
-    }
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj))
@@ -24,7 +23,8 @@ public class Abstraction : Node
             return true;
         if (obj.GetType() != this.GetType())
             return false;
-        return Equals((Abstraction)obj);
+        var other = (Abstraction)obj;
+        return VariableName == other.VariableName && Body.Equals(other.Body) && Equals(Type, other.Type);
     }
     public override int GetHashCode()
     {

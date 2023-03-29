@@ -1,31 +1,24 @@
 namespace Logical.Ast;
 
-public abstract class Node : IEquatable<Node>
+public abstract class Node
 {
     public readonly Node? Annotation;
 
     protected Node(Node? annotation)
     {
-        this.Annotation = annotation;
+        Annotation = annotation;
     }
 
-    public bool Equals(Node? other)
-    {
-        if (ReferenceEquals(null, other))
-            return false;
-        if (ReferenceEquals(this, other))
-            return true;
-        return Equals(Annotation, other.Annotation);
-    }
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj))
             return false;
         if (ReferenceEquals(this, obj))
             return true;
-        if (obj.GetType() != this.GetType())
+        if (obj.GetType() != GetType())
             return false;
-        return Equals((Node)obj);
+        var other = (Node)obj;
+        return Equals(Annotation, other.Annotation);
     }
     public override int GetHashCode()
     {

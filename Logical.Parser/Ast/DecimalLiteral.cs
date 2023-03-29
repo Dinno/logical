@@ -4,24 +4,21 @@ public class DecimalLiteral : Node
 {
     public readonly string Value;
 
-    public DecimalLiteral(string value, Node? annotation) : base(annotation)
+    public DecimalLiteral(string value, Node? annotation = null) : base(annotation)
     {
         Value = value;
     }
 
-    protected bool Equals(DecimalLiteral other)
-    {
-        return base.Equals(other) && Value == other.Value;
-    }
     public override bool Equals(object? obj)
     {
         if (ReferenceEquals(null, obj))
             return false;
         if (ReferenceEquals(this, obj))
             return true;
-        if (obj.GetType() != this.GetType())
+        if (obj.GetType() != GetType())
             return false;
-        return Equals((DecimalLiteral)obj);
+        var other = (DecimalLiteral)obj;
+        return Value == other.Value;
     }
     public override int GetHashCode()
     {
