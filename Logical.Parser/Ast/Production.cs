@@ -14,11 +14,8 @@ public class Production : AbstractionBase
     }
     public Node ResultType => Body;
 
-    public Production(Node argumentType, Node resultType, string? variableName = null, Node? annotation = null) : 
-        base(variableName, argumentType annotation)
+    public Production(Node argumentType, Node resultType, string? variableName = null, Node? annotation = null) :
+        base(variableName, resultType, argumentType, annotation)
     {
-        ArgumentType = argumentType;
-        ResultType = resultType;
-        VariableName = variableName;
     }
 }
