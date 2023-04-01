@@ -21,7 +21,7 @@ public class Compiler
     // {
     //     return CompileRec(ast);
     // }
-    //
+
     // private (Node, int MinRef) CompileRec(Ast.Node ast)
     // {
     //     var modelNode = ast switch
@@ -39,44 +39,44 @@ public class Compiler
     //     return modelNode;
     // }
 
-    // public void PrepareAst(Ast.Node ast)
-    // {
-    //     PrepareAstRec(ast);
-    // }
-    // private void PrepareAstRec(Ast.Node ast)
-    // {
-    //     switch (ast)
-    //     {
-    //         case Production production:
-    //         case Abstraction abstraction:
-    //             List<int> varList;
-    //             var exists = _variables.TryGetValue(abstraction.VariableName, out varList);
-    //             if (!exists)
-    //             {
-    //                 varList = new List<int>();
-    //                 _variables.Add(abstraction.VariableName, varList);
-    //             }
-    //             var varIndex = varList.Count;
-    //             varList.Add(_level++);
-    //             
-    //             
-    //             
-    //             varList.RemoveAt(varIndex);
-    //             _level--;
-    //             break;
-    //         case Application application:
-    //             break;
-    //         case DecimalLiteral decimalLiteral:
-    //             break;
-    //         case Pair pair:
-    //             break;
-    //         case Parentheses parentheses:
-    //             break;
-    //             break;
-    //         case Ast.Variable variable:
-    //             break;
-    //         default:
-    //             throw new ArgumentOutOfRangeException(nameof(ast));
-    //     }
-    // }
+    public void PrepareAst(Ast.Node ast)
+    {
+        PrepareAstRec(ast);
+    }
+    private void PrepareAstRec(Ast.Node ast)
+    {
+        switch (ast)
+        {
+            case Production production:
+            case Abstraction abstraction:
+                List<int> varList;
+                var exists = _variables.TryGetValue(abstraction.VariableName, out varList);
+                if (!exists)
+                {
+                    varList = new List<int>();
+                    _variables.Add(abstraction.VariableName, varList);
+                }
+                var varIndex = varList.Count;
+                varList.Add(_level++);
+                
+                
+                
+                varList.RemoveAt(varIndex);
+                _level--;
+                break;
+            case Application application:
+                break;
+            case DecimalLiteral decimalLiteral:
+                break;
+            case Pair pair:
+                break;
+            case Parentheses parentheses:
+                break;
+                break;
+            case Ast.Variable variable:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(ast));
+        }
+    }
 }

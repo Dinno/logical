@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Logical.Ast;
 
 namespace ParserTests;
@@ -87,6 +88,6 @@ public class ParserTests
     {
         var parser = new Logical.Parser();
         var ast = parser.Parse(program);
-        Assert.Equal(astReference, ast);
+        ast.Should().BeEquivalentTo(astReference, options => options.RespectingRuntimeTypes());
     }
 }
