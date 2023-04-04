@@ -1,21 +1,16 @@
 ﻿using Logical.Ast;
-using Logical.Model;
-using Abstraction = Logical.Ast.Abstraction;
 using Application = Logical.Ast.Application;
-using Node = Logical.Model.Node;
-using Production = Logical.Ast.Production;
-using Variable = Logical.Model.Variable;
 
 namespace Logical.Compiler;
 
 public class Compiler
 {
     private int _level = 0;
-    
+
     /// <summary>
     /// Is used to count variable references and to store variable depths 
     /// </summary>
-    private Dictionary<string, List<int>> _variables = new Dictionary<string, List<int>>();
+    private readonly Dictionary<string, List<(int, int)>> _variables = new();
 
     // public Node Compile(Ast.Node ast)
     // {
@@ -39,44 +34,77 @@ public class Compiler
     //     return modelNode;
     // }
 
-    public void PrepareAst(Ast.Node ast)
+    public void CalcAstBindStates(Node ast)
     {
-        PrepareAstRec(ast);
+        CalcAstBindStatesRec(ast);
     }
-    private void PrepareAstRec(Ast.Node ast)
+    private void CalcAstBindStatesRec(Node ast)
     {
-        switch (ast)
+        while (true)
         {
-            case Production production:
-            case Abstraction abstraction:
-                List<int> varList;
-                var exists = _variables.TryGetValue(abstraction.VariableName, out varList);
-                if (!exists)
+            switch (ast)
+            {
+                case AbstractionOrProduction abstractionOrProduction:
                 {
-                    varList = new List<int>();
-                    _variables.Add(abstraction.VariableName, varList);
+                    if (abstractionOrProduction.Type is not null)
+                        CalcAstBindStatesRec(abstractionOrProduction.Type);
+
+                    if (abstractionOrProduction.Annotation is not null)
+                        CalcAstBindStatesRec(abstractionOrProduction.Annotation);
+
+                    var variableName = abstractionOrProduction.VariableName;
+                    if (abstractionOrProduction.IsUnbound || variableName is null)
+                    {
+                        CalcAstBindStatesRec(abstractionOrProduction.Body);
+                        abstractionOrProduction.IsUnbound = true;
+                    }
+
+                    var exists = _variables.TryGetValue(variableName, out var varList);
+                    if (!exists)
+                    {
+                        varList = new List<(int, int)>();
+                        _variables.Add(variableName, varList);
+                    }
+                    var varIndex = varList!.Count;
+                    varList.Add((_level, 0));
+                    _level++;
+
+                    CalcAstBindStatesRec(abstractionOrProduction.Body);
+
+                    _level--;
+                    abstractionOrProduction.IsUnbound = varList[varIndex].Item2 == 0;
+                    varList.RemoveAt(varIndex);
+
+                    break;
                 }
-                var varIndex = varList.Count;
-                varList.Add(_level++);
-                
-                
-                
-                varList.RemoveAt(varIndex);
-                _level--;
-                break;
-            case Application application:
-                break;
-            case DecimalLiteral decimalLiteral:
-                break;
-            case Pair pair:
-                break;
-            case Parentheses parentheses:
-                break;
-                break;
-            case Ast.Variable variable:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(ast));
+                case Application application:
+                    CalcAstBindStatesRec(application.Function);
+                    CalcAstBindStatesRec(application.Argument);
+                    CalcAstBindStatesRec(application.Annotation);
+                    break;
+                case Pair pair:
+                    CalcAstBindStatesRec(pair.Left);
+                    CalcAstBindStatesRec(pair.Right);
+                    CalcAstBindStatesRec(pair.Annotation);
+                    break;
+                case Parentheses parentheses:
+                    CalcAstBindStatesRec(parentheses.Node);
+                    CalcAstBindStatesRec(parentheses.Annotation);
+                    break;
+                case Variable variable:
+                {
+                    var varList = _variables[variable.Name];
+                    var lastOccurence = varList[^1];
+                    lastOccurence.Item2++;
+                    varList[^1] = lastOccurence;
+                    break;
+                }
+                case DecimalLiteral decimalLiteral:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(ast));
+            }
+            break;
         }
     }
 }
