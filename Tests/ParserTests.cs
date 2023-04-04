@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Logical.Ast;
 
-namespace ParserTests;
+namespace Tests;
 
 public class ParserTests
 {
@@ -17,22 +17,22 @@ public class ParserTests
         },
         new object[]
         {
-            "a; b", new Abstraction("a", new Variable("b"))
+            "a; b", new Abstraction(new Variable("b"), "a")
         },
         new object[]
         {
-            "a = 1; a", new Application(new Abstraction("a", new Variable("a")), new DecimalLiteral("1"))
+            "a = 1; a", new Application(new Abstraction(new Variable("a"), "a"), new DecimalLiteral("1"))
         },
         new object[]
         {
-            "a => b", new Abstraction("a", new Variable("b"))
+            "a => b", new Abstraction(new Variable("b"), "a")
         },
         new object[]
         {
             "c = a => a; c",
             new Application(
-                new Abstraction("c", new Variable("c")),
-                new Abstraction("a", new Variable("a")))
+                new Abstraction(new Variable("c"), "c"),
+                new Abstraction(new Variable("a"), "a"))
         },
         new object[]
         {
@@ -48,19 +48,19 @@ public class ParserTests
         },
         new object[]
         {
-            "a (b => c)", new Application(new Variable("a"), new Parentheses(new Abstraction("b", new Variable("c"))))
+            "a (b => c)", new Application(new Variable("a"), new Parentheses(new Abstraction(new Variable("c"), "b")))
         },
         new object[]
         {
-            "a => b c", new Abstraction("a", new Application(new Variable("b"), new Variable("c")))
+            "a => b c", new Abstraction(new Application(new Variable("b"), new Variable("c")), "a")
         },
         new object[]
         {
-            "a : Type; a", new Abstraction("a", new Variable("a"), new Variable("Type"))
+            "a : Type; a", new Abstraction(new Variable("a"), "a", new Variable("Type"))
         },
         new object[]
         {
-            "a: Type => a", new Abstraction("a", new Variable("a"), new Variable("Type"))
+            "a: Type => a", new Abstraction(new Variable("a"), "a", new Variable("Type"))
         },
         new object[]
         {
@@ -72,13 +72,13 @@ public class ParserTests
         },
         new object[]
         {
-            "a: x:Type -> Type; a", new Abstraction("a", new Variable("a"), new Production(new Variable("Type"), new Variable("Type"), "x"))
+            "a: x:Type -> Type; a", new Abstraction(new Variable("a"), "a", new Production(new Variable("Type"), new Variable("Type"), "x"))
         },
         new object[]
         {
             "set1: (Int, Str, Float) -> Bool; set1",
-            new Abstraction("set1", new Variable("set1"),
-                new Production(new Parentheses(new Pair(new Variable("Int"), new Pair(new Variable("Str"), new Variable("Float")))),
+            new Abstraction(new Variable("set1"),
+                "set1", new Production(new Parentheses(new Pair(new Variable("Int"), new Pair(new Variable("Str"), new Variable("Float")))),
                     new Variable("Bool")))
         },
     };

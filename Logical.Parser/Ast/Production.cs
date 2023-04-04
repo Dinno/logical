@@ -2,7 +2,7 @@
 
 namespace Logical.Ast;
 
-public class Production : AbstractionBase
+public class Production : AbstractionOrProduction
 {
     public Node ArgumentType
     {
@@ -15,7 +15,7 @@ public class Production : AbstractionBase
     public Node ResultType => Body;
 
     public Production(Node argumentType, Node resultType, string? variableName = null, Node? annotation = null) :
-        base(variableName, resultType, argumentType, annotation)
+        base(resultType, variableName, argumentType, annotation)
     {
     }
 }

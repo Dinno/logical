@@ -2,18 +2,9 @@
 
 namespace Logical.Ast;
 
-public class Abstraction : AbstractionBase
+public class Abstraction : AbstractionOrProduction
 {
-    public new string VariableName
-    {
-        get
-        {
-            Debug.Assert(base.VariableName is not null, "VariableName is empty!");
-            return base.VariableName;
-        }
-    }
-
-    public Abstraction(string variableName, Node body, Node? type = null, Node? annotation = null)
-        : base(variableName, body, type, annotation)
+    public Abstraction(Node body, string? variableName, Node? type = null, Node? annotation = null)
+        : base(body, variableName, type, annotation)
     {}
 }
