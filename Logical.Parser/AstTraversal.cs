@@ -35,11 +35,14 @@ public class AstTraversal
                         TraverseRec(abstractionOrProduction.Annotation);
 
                     var variableName = abstractionOrProduction.VariableName;
+
                     if (abstractionOrProduction.IsUnbound || variableName is null)
                     {
                         TraverseRec(abstractionOrProduction.Body);
+                        _visitor.UnboundAbstractionOrProductionOut(abstractionOrProduction, _level);
+                        break;
                     }
-
+                    
                     var exists = _variables.TryGetValue(variableName, out var varList);
                     if (!exists)
                     {
@@ -55,8 +58,9 @@ public class AstTraversal
                     _level--;
                     abstractionOrProduction.IsUnbound = varList[varIndex].Item2 == 0;
                     varList.RemoveAt(varIndex);
-
+                        
                     _visitor.AbstractionOrProductionOut(abstractionOrProduction, _level, varIndex);
+
                     break;
                 }
                 case Application application:
