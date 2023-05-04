@@ -1,6 +1,6 @@
 ﻿namespace Logical.Model;
 
-public class Abstraction : Node
+public abstract class Abstraction : Node
 {
     public readonly Node Body;
 

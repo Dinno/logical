@@ -2,7 +2,7 @@
 
 public class Annotation : BinaryNode
 {
-    public Annotation(Node left, Node right, int shift) : base(left, right, shift)
+    public Annotation(Node annotated, Node annotation, int shift) : base(annotated, annotation, shift)
     {
     }
 }
