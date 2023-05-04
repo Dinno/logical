@@ -12,8 +12,8 @@ public class CompilerTests
         var ast = new Abstraction("a", new Variable("a"));
         ast.IsUnbound.Should().Be(false);
         
-        var compiler = new Compiler();
-        compiler.CalcAstBindStates(ast);
+        var compiler = new AstBindStatesCalculator();
+        compiler.Calculate(ast);
         ast.IsUnbound.Should().Be(false);
     }
     
@@ -23,8 +23,8 @@ public class CompilerTests
         var ast = new Abstraction("a", new DecimalLiteral("1"));
         ast.IsUnbound.Should().Be(false);
         
-        var compiler = new Compiler();
-        compiler.CalcAstBindStates(ast);
+        var compiler = new AstBindStatesCalculator();
+        compiler.Calculate(ast);
         ast.IsUnbound.Should().Be(true);
     }
 }

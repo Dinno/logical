@@ -1,18 +1,36 @@
 ﻿namespace Logical.Ast;
 
-public class AstTraversal
+public struct BindingInfo<T>
 {
-    private int _level = 0;
+    public readonly int Level;
+    public T Data;
+
+    public BindingInfo(int level, T data)
+    {
+        Level = level;
+        Data = data;
+    }
+}
+/// <summary>
+/// Implements traversal of AST using visitor pattern
+/// </summary>
+/// <remarks>There are two cases of AST traversal. Which case it is, depends on calculation
+/// of binding status of abstractions and productions. When binding states are already calculated
+/// number of binding levels may be smaller then when they are not</remarks>
+public class AstTraversal<TBinding, TNode, TAstVisitor>
+    where TAstVisitor : IAstVisitor<TBinding, TNode>
+{
+    private int _level;
 
     /// <summary>
     /// Is used to count variable references and to store variable depths 
     /// </summary>
-    private readonly Dictionary<string, List<(int, int)>> _variables = new();
-    private readonly IVisitor _visitor;
+    private readonly Dictionary<string, List<BindingInfo<TBinding>>> _variables = new();
+    private readonly TAstVisitor _astVisitor;
 
-    public AstTraversal(IVisitor visitor)
+    public AstTraversal(TAstVisitor astVisitor)
     {
-        _visitor = visitor;
+        _astVisitor = astVisitor;
     }
 
     public void Traverse(Node ast)
@@ -20,7 +38,7 @@ public class AstTraversal
         TraverseRec(ast);
     }
 
-    private void TraverseRec(Node ast)
+    private TNode TraverseRec(Node ast)
     {
         while (true)
         {
@@ -28,70 +46,72 @@ public class AstTraversal
             {
                 case AbstractionOrProduction abstractionOrProduction:
                 {
+                    TNode? type = default; 
                     if (abstractionOrProduction.Type is not null)
-                        TraverseRec(abstractionOrProduction.Type);
+                        type = TraverseRec(abstractionOrProduction.Type);
 
+                    TNode? annotation = default;
                     if (abstractionOrProduction.Annotation is not null)
-                        TraverseRec(abstractionOrProduction.Annotation);
+                        annotation = TraverseRec(abstractionOrProduction.Annotation);
 
                     var variableName = abstractionOrProduction.VariableName;
 
                     if (abstractionOrProduction.IsUnbound || variableName is null)
                     {
-                        TraverseRec(abstractionOrProduction.Body);
-                        _visitor.UnboundAbstractionOrProductionOut(abstractionOrProduction, _level);
-                        break;
+                        var body = TraverseRec(abstractionOrProduction.Body);
+                        return _astVisitor.UnboundAbstractionOrProductionOut(abstractionOrProduction, _level, body, type, annotation);
                     }
-                    
-                    var exists = _variables.TryGetValue(variableName, out var varList);
-                    if (!exists)
+
+                    if (!_variables.TryGetValue(variableName, out var varList))
                     {
-                        varList = new List<(int, int)>();
+                        varList = new List<BindingInfo<TBinding>>();
                         _variables.Add(variableName, varList);
                     }
-                    var varIndex = varList!.Count;
-                    varList.Add((_level, 0));
+                    var varIndex = varList.Count;
+                    varList.Add(new BindingInfo<TBinding>(_level, _astVisitor.CreateBindingData()));
                     _level++;
 
-                    TraverseRec(abstractionOrProduction.Body);
+                    var body2 = TraverseRec(abstractionOrProduction.Body);
 
                     _level--;
-                    abstractionOrProduction.IsUnbound = varList[varIndex].Item2 == 0;
+                    var bindingInfo = varList[varIndex];
                     varList.RemoveAt(varIndex);
-                        
-                    _visitor.AbstractionOrProductionOut(abstractionOrProduction, _level, varIndex);
 
-                    break;
+                    return _astVisitor.AbstractionOrProductionOut(abstractionOrProduction, bindingInfo, body2, type, annotation);
                 }
                 case Application application:
-                    TraverseRec(application.Function);
-                    TraverseRec(application.Argument);
+                {
+                    var function = TraverseRec(application.Function);
+                    var argument = TraverseRec(application.Argument);
+                    TNode? annotation = default;
                     if (application.Annotation is not null)
                         TraverseRec(application.Annotation);
-                    _visitor.ApplicationOut(application);
-                    break;
+                    return _astVisitor.ApplicationOut(application, function, argument, annotation);
+                }
                 case Pair pair:
-                    TraverseRec(pair.Left);
-                    TraverseRec(pair.Right);
+                {
+                    var left = TraverseRec(pair.Left);
+                    var right = TraverseRec(pair.Right);
                     if (pair.Annotation is not null)
                         TraverseRec(pair.Annotation);
-                    _visitor.PairOut(pair);
-                    break;
+                    return _astVisitor.PairOut(pair, left, right);
+                }
                 case Parentheses parentheses:
-                    TraverseRec(parentheses.Node);
+                {
+                    var intern = TraverseRec(parentheses.Node);
                     if (parentheses.Annotation is not null)
                         TraverseRec(parentheses.Annotation);
-                    _visitor.ParenthesesOut(parentheses);
-                    break;
+                    return _astVisitor.ParenthesesOut(parentheses, intern);
+                }
                 case Variable variable:
                 {
                     var varList = _variables[variable.Name];
-                    _visitor.Variable(variable, varList);
-                    break;
+                    return _astVisitor.Variable(variable, varList);
                 }
                 case DecimalLiteral decimalLiteral:
-                    _visitor.DecimalLiteral(decimalLiteral);
-                    break;
+                {
+                    return _astVisitor.DecimalLiteral(decimalLiteral);
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(ast));
             }
