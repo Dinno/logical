@@ -62,4 +62,15 @@ todo:
 
 ```
 
+Expression: a => a a
+Should it be interpreted as: (a => a) a 
+or as: a => (a a)
+Answer: a => (a a)
 
+Expression: a a => a
+Is interpreted as: a (a => a)
+
+Expression: a => a a => a
+Should it be interpreted as: a => a (a => a) 
+or as: (a => a) (a => a)
+Answer: a => a (a => a)

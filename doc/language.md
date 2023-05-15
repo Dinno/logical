@@ -6,7 +6,7 @@ On the model level the language consists of following basic constructions:
 4. Types (TYPE)
 5. Productions (x -> y)
 
-But on syntactical level it has additional constructions such as:
+But on syntactical level it has additional constructions:
 
 1. Operators
 2. Pattern matchers

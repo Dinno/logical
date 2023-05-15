@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48ADEB75-00B4-48CD-9C73-7F60270D157B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicalParser", "LogicalParser\LogicalParser.csproj", "{017699EF-4188-4872-A11D-52739B33F6B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logical", "Logical\Logical.csproj", "{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "ParserTests\ParserTests.csproj", "{0B3BDA92-AB7B-4D42-B6AF-29D499574031}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = FSOntology.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{017699EF-4188-4872-A11D-52739B33F6B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{017699EF-4188-4872-A11D-52739B33F6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{017699EF-4188-4872-A11D-52739B33F6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{017699EF-4188-4872-A11D-52739B33F6B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EB1FB6-0AE6-4874-9245-5A40C2867CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
