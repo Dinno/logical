@@ -20,33 +20,30 @@ dataset
 
 # (?) Example of DB table model 
 ```
-
-
 table: String -> Array Column -> Table;
 int: Type;
 
-table("user"
-    [
-        column("id", int)
-    ]
-)
+table "user"
+[
+    column ("id", int),
+]
 ```
 
 # Basic definitions
 ```
-List: T --> {
-    empty: List(T);
-    list: T -> List(T) -> List(T);
+List: T -> {
+    empty: List T;
+    list: T -> List T -> List T;
 };
 
 List: TYPE -> TYPE;
-empty: T: TYPE -> List(T);
-list: T: TYPE -> T -> List(T) -> List(T);
-@destructor List$destructor: T: TYPE -> P: TYPE -> P -> (T -> List(T) -> P) -> (List(T) -> P);
+empty: T: TYPE -> List T;
+list: T: TYPE -> T -> List T -> List T;
+@destructor List$destructor: T: TYPE -> P: TYPE -> P -> (T -> List T -> P) -> (List T -> P);
 
-Set: T -- {
-    
-};
+Tuple: TYPE -> List TYPE -> TYPE;
+null
+
 ```
 
 # Site description example

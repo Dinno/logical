@@ -1,15 +1,16 @@
-On the level of model the language consists of following basic constructions:
+On the model level the language consists of following basic constructions:
 
-1. (?)Literals
-2. Variables
-3. Function definitions
-4. Function applications
-   //5. Function types
+1. Variables (x)
+2. Function definitions (x => y)
+3. Function applications (x y)
+4. Types (TYPE)
+5. Productions (x -> y)
 
 But on syntactical level it has additional constructions such as:
 
 1. Operators
-2.
+2. Pattern matchers
+3. Literals
 
 ## Literals
 
@@ -21,15 +22,17 @@ But on syntactical level it has additional constructions such as:
 
 x, X, var1, \_a - alfanumeric string (?) representing reference to variables with given name. If several variables have specified name in given scope then this construction will generate model with list of values of those variables.
 
+## Function declarations
+
+### Examples
+`x => x`, `x, y => x * y`, `_ => null`, `x; x * x`, `(1, x) => x`
+
+### Generation
+Simple function declaration generates abstraction annotated by name of declared variable. `x => x` converts to $(\lambda v)_{name("x")}$. Underline instead of variable name leads to removal of name annotation and makes resulting abstraction unboundable: `_ => null` $\rArr$ $\Lambda v$
+
+Pattern in a left part of function definition leads to generation of pattern matching proxy???
+
 ## Function Applications
 
-f 1, someFunction(1, x) - Application of function to some value. In second example the
+`f 1`, `someFunction(1, x)` - Application of function to some value. In second example the
 value is tuple. Generates model: @a(а, 1), @a(someFunction, x) where @a is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
-
-
-
-
-
-
-
-
