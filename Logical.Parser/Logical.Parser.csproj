@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Pegasus" Version="4.2.0-alpha0003" />
+      <PackageReference Include="QuikGraph" Version="2.5.0" />
     </ItemGroup>
 
     <ItemGroup>

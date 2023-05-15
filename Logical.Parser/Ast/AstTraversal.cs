@@ -33,9 +33,9 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
         _astVisitor = astVisitor;
     }
 
-    public void Traverse(Node ast)
+    public TNode Traverse(Node ast)
     {
-        TraverseRec(ast);
+        return TraverseRec(ast);
     }
 
     private TNode TraverseRec(Node ast)
