@@ -3,7 +3,7 @@
 .pnp.*
 
 # generated
-src/generated
+js/src/generated
 
 # build
 /build

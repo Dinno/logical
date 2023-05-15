@@ -4,23 +4,21 @@ import { Kind, Application, Abstraction, Variable } from "../formalTree";
 }}
 
 start 
-    = _ expr:expr _ { return expr; }
-
-expr "expression"
-    = fexpr / application / integer
-
-fexpr "functional expression"
-    = abstraction / var
+    = _ expr:application _ { return expr; }
 
 application "function application"
-    = r: applicationRec { r.reverse() } 
+    = r:applicationRec { console.log(r); r.reverse() } 
 
 applicationRec "function application"
-    = func: fexpr _ arg: expr {return new Application(func, arg)}
+    = func:fexpr _ arg:applicationRec {return new Application(func, arg)}
+    / fexpr
+
+fexpr "functional expression"
+    = abstraction / var / integer  // Yes. Integer may potentially be function
 
 abstraction "function definition"
-    = name: name _ ("=>" / ";") _ body: expr {return new Abstraction(name, body, [])}
-    //= name: name _ ":" _ type: (kind / expr) _ ("=>" / ";") _ body: expr { return new Abstraction(name, body, [createTypeAttr(type)]) }
+    = name:name _ ("=>" / ";") _ body:application {return new Abstraction(name, body, [])}
+    /// name:name _ ":" _ type:(kind / expr) _ ("=>" / ";") _ body:expr { return new Abstraction(name, body, [createTypeAttr(type)]) }
 
 integer "integer number"
     = [0-9]+ {return createInteger(text())}
