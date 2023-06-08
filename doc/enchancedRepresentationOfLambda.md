@@ -27,7 +27,7 @@ The rules for the calculation of variable indices are as follows:
 
 ### Examples of terms
 
-| λ | λ De Bruijn  | This representation | Description
+| λ | λ De Bruijn  | This representation | Description |
 |---|---|---|---|
 | $x$ | $1$ | $v$ | Open term. Has one open variable |
 | $xx$ | $11$ | $v0v$ | Open term. Has two open variables having the same index |
