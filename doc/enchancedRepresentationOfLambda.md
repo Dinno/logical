@@ -4,25 +4,28 @@
 
 This work allows to represent terms of lambda calculus without naming bound variables. Terms written in this representation are invariant to α-conversion and also invariant to location in formula's tree even when they have outer variables. Latter is not the case with De Bruijn indexes because indexes of outer variables change when term's depth in formula tree changes. It allows to perform β-reduction easily, meaning that when in term $(λx.T)P$ variable $x$ is substituted with term $P$, representation of term $P$ stays the same in all cases even when it is not closed. It also allows to perform more effective deduplication of terms because terms have the same representation in more cases then with De Bruijn indexes. This in turn allows for fast $O(1)$ α-equivalence comparisons even in cases when we compare open terms.
 
-## Representation
+## Representation of Lambda Calculus
 
-This representation is mostly analogous to standard lambda calculus and so here I will describe only differences.
+In this paper, we propose a representation of lambda calculus that is mostly analogous to the standard lambda calculus. However, there are some key differences, which we describe below.
 
-* In this representation variables do not have any value or name bound to them and so are denoted by $v$. 
-Abstractions are of two kinds:
-* boundable: $λT$ - can have bound variable in $T$,
-* and unboundable: $ΛT$ - can't have bound variable.
-* Applications are denoted by $TsP$ and have signed integer number $s$ called "shift" assigned to them meaning of which will be explained later.
+Variables in our representation do not have any value or name bound to them, and are denoted by $v$. There are two kinds of abstractions: bound ($λT$) and unbound ($ΛT$). Bound abstractions have variables bound to them in $T$, while unbound abstractions don't.
 
-Open variables of open terms have indices assigned to each of them which have about the same meaning as De Bruijn ones. Those indices are not written anywhere directly but can be deduced by term structure. Such indices $v_0, ..., v_{N-1}$ where $N > 0$ must satisfy conditions that $v_0 = 0$ and $v_i < v_{i+1}$. Each index $v_i$ has a set of variable occurrences $O_i$ bound to it. This set of occurrences corresponds to a set of all occurrences of open variable in standard lambda calculus.
+Applications are denoted by $TsP$, where $s$ is a signed integer number called the "shift". The meaning of this shift will be explained later.
 
-Here we will describe the rules of calculation of variable indices by construction. Indices of internal terms will be denoted by $v_0, ..., v_{N-1}$, $w_0, ..., w_{M-1}$ and indices of constructed term by $v'_0, ..., v'_{N'-1}$. Sets of variable occurrences of internal terms will be denoted with $O_i$, $K_i$ and $O'_i$ for constructed term:
-* Term $v$ has exactly one open variable with index $v'_0 = 0$ and $O'_0$ has only one occurrence.
-* Unboundable abstraction $ΛT$ has the same variables as term $T$, meaning $v'_i = v_i$ and $O'_i = O_i$ for $0 \le i < N$.
-* Boundable abstraction $λT$ has indices and occurrences $$v'_i = v_{i+1} - v_1$$ $$O'_i = O_{i+1}$$ where $0 \le i < N - 1$. If $N > 0$ then occurrences from $O_0$ become bound to the abstraction.
-* Application $PsT$ has set of variable indices $$\set{v + \max(0, -s) | v ∈ \set{v_0, ..., v_{N-1}}}\cup \set{w + \max(0, s) | w ∈ \set{w_0, ..., w_{M-1}}}$$ where $v_i$ are indices from $P$, $w_i$ indices from $T$. New indices are numbered so that $v'_0 = 0$ and $v'_i < v_{i+1}$. Resulting occurrences of variables are unions of occurrences from internal terms with equal final numbers.
+Open terms have indices assigned to each of their open variables. These indices, denoted by $v_0, ..., v_{N-1}$, have a similar meaning to De Bruijn indices. However, in our representation, the indices are not written anywhere directly, but can be deduced by the term structure.
 
-## Examples of terms
+The indices $v_0, ..., v_{N-1}$ must satisfy the conditions that $v_0 = 0$ and $v_i < v_{i+1}$. Each index $v_i$ has a set of variable occurrences $O_i$ bound to it. This set of occurrences corresponds to the set of all occurrences of open variables in standard lambda calculus.
+
+We describe the rules for calculation of variable indices by construction. Indices of internal terms are denoted by $v_0, ..., v_{N-1}$ for left term, and $w_0, ..., w_{M-1}$ for right term if it exists. Indices of constructed term are denoted by $v'_0, ..., v'_{N'-1}$. Sets of variable occurrences of internal terms are denoted by $O_i$, $K_i$, and $O'_i$ for the constructed term.
+
+The rules for the calculation of variable indices are as follows:
+
+* A term $v$ has exactly one open variable with index $v'_0 = 0$, and $O'_0$ has only one occurrence.
+* An unbound abstraction $ΛT$ has the same variables as term $T$, meaning $v'_i = v_i$ and $O'_i = O_i$ for $0 \le i < N$.
+* A bound abstraction $λT$ has indices and occurrences given by: $$v'_i = v_{i+1} - v_1$$ $$O'_i = O_{i+1}$$ where $0 \le i < N - 1$. If $N > 0$. Occurrences from $O_0$ a the ones bound to the abstraction.
+* An application $PsT$ has a set of variable indices given by: $$\set{v + \max(0, -s) | v ∈ \set{v_0, ..., v_{N-1}}}\cup \set{w + \max(0, s) | w ∈ \set{w_0, ..., w_{M-1}}}$$ where $v_i$ are indices from $P$ and $w_i$ are indices from $T$. New indices are numbered in such a way that $v'_0 = 0$ and $v'_i < v_{i+1}$. The resulting occurrences of variables are unions of occurrences from internal terms with equal final numbers.
+
+### Examples of terms
 
 | λ | λ De Bruijn  | This representation | Description
 |---|---|---|---|
@@ -57,14 +60,9 @@ To map a term in the standard representation to a term in the location independe
 a. Start with an empty set of bound variables and a counter initialized to 0.
 
 b. For each abstraction of the form $λx.M$, where $M$ is a subterm:
-
-```
- i. If $x$ is not already in the set of bound variables, add it to the set and assign it a unique index $i$.
- 
- ii. Replace $x$ with the index $i$ in $M$, and recursively apply this algorithm to $M$.
- 
- iii. Return the term $λT$, where $T$ is the result of applying the algorithm to $M$.
-```
+  1. If $x$ is not already in the set of bound variables, add it to the set and assign it a unique index $i$.
+  2. Replace $x$ with the index $i$ in $M$, and recursively apply this algorithm to $M$.
+  3. Return the term $λT$, where $T$ is the result of applying the algorithm to $M$.
 
 c. For each application of the form $MN$, recursively apply this algorithm to $M$ and $N$, and return the term $TsP$, where $s$ is the difference between the number of abstractions in $M$ and the number of abstractions in $N$.
 
@@ -75,14 +73,10 @@ This algorithm maps every term in the standard representation to a term in the l
 To map a term in the location independent representation to a term in the standard representation, we can use the following algorithm:
 
 a. For each abstraction of the form $λT$:
+  1. Find the index $i$ of the bound variable in $T$.
+  2. Replace the index $i$ with a fresh variable $x$, and recursively apply this algorithm to $T$.
+  3. Return the term $λx.M$, where $M$ is the result of applying the algorithm to $T$.
 
-```
- i. Find the index $i$ of the bound variable in $T$.
- 
- ii. Replace the index $i$ with a fresh variable $x$, and recursively apply this algorithm to $T$.
- 
- iii. Return the term $λx.M$, where $M$ is the result of applying the algorithm to $T$.
-```
 
 b. For each application of the form $TsP$, recursively apply this algorithm to $T$ and $P$, and return the term $MN$, where $N$ is the result of applying the algorithm to $P$ and $M$ is the result of applying the algorithm to $T$ with all occurrences of indices replaced by their corresponding variables.
 
