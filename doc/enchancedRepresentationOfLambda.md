@@ -24,7 +24,7 @@ Here we will describe the rules of calculation of variable indices by constructi
 
 ## Examples of terms
 
-| λ | λ De Bruijn  | This representation | Description
+| λ | λ De Bruijn  | This representation | Description |
 |---|---|---|---|
 | $x$ | $1$ | $v$ | Open term. Has one open variable |
 | $xx$ | $11$ | $v0v$ | Open term. Has two open variables having the same index |
