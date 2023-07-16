@@ -20,7 +20,8 @@ But on syntactical level it has additional constructions:
 
 ## Variables
 
-x, X, var1, \_a - alfanumeric string (?) representing reference to variables with given name. If several variables have specified name in given scope then this construction will generate model with list of values of those variables.
+x, X, var1, \_a - alfa-numeric string (?) representing reference to variables with a given name. 
+x^ - this construction ('^' symbolizes vector) allows to capture all variables with the name 'x' visible in a given scope. It will generate model with list of values of those variables.
 
 ## Function declarations
 
@@ -35,4 +36,4 @@ Pattern in a left part of function definition leads to generation of pattern mat
 ## Function Applications
 
 `f 1`, `someFunction(1, x)` - Application of function to some value. In second example the
-value is tuple. Generates model: @a(а, 1), @a(someFunction, x) where @a is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
+value is tuple. Generates model: @apply(f, 1), @apply(someFunction, @tuple (@pair 1 x)) where @apply is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
