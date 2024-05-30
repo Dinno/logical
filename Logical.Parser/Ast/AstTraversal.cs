@@ -1,23 +1,16 @@
-﻿namespace Logical.Ast;
+﻿using LogicalParser.Ast.Nodes;
 
-public struct BindingInfo<T>
-{
-    public readonly int Level;
-    public T Data;
+namespace LogicalParser.Ast;
 
-    public BindingInfo(int level, T data)
-    {
-        Level = level;
-        Data = data;
-    }
-}
 /// <summary>
 /// Implements traversal of AST using visitor pattern
 /// </summary>
 /// <remarks>There are two cases of AST traversal. Which case it is, depends on calculation
-/// of binding status of abstractions and productions. When binding states are already calculated
-/// number of binding levels may be smaller then when they are not</remarks>
+/// of binding states of abstractions and productions. When binding states are already calculated
+/// number of binding levels may be smaller than when they are not, because we don't count
+/// unbound (not having bound variables) abstractions and productions as levels</remarks>
 public class AstTraversal<TBinding, TNode, TAstVisitor>
+    where TNode: struct
     where TAstVisitor : IAstVisitor<TBinding, TNode>
 {
     private int _level;
@@ -115,7 +108,6 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
                 default:
                     throw new ArgumentOutOfRangeException(nameof(ast));
             }
-            break;
         }
     }
 }

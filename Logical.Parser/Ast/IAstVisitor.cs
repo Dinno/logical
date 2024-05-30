@@ -1,6 +1,9 @@
-﻿namespace Logical.Ast;
+﻿using LogicalParser.Ast.Nodes;
+
+namespace LogicalParser.Ast;
 
 public interface IAstVisitor<TBinding, TNode>
+    where TNode: struct
 {
     /// <summary>
     /// Is called when we go out of abstraction or production node.
@@ -11,8 +14,7 @@ public interface IAstVisitor<TBinding, TNode>
     /// <param name="body"></param>
     /// <param name="type">Data returned by type subtree visitor</param>
     /// <param name="annotation">Data returned by annotation subtree visitor</param>
-    TNode AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<TBinding> bindingInfo, TNode body, TNode? type,
-        TNode? annotation);
+    TNode AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<TBinding> bindingInfo, TNode body, TNode? type, TNode? annotation);
 
     /// <summary>
     /// Is called when we go out of abstraction or production node.

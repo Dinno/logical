@@ -1,8 +1,8 @@
-﻿namespace Logical.Model;
+﻿namespace LogicalParser.Model;
 
 public class Application : BinaryNode
 {
-    public Application(Node left, Node right, int shift) : base(left, right, shift)
+    public Application(Node function, Node argument, int shift) : base(function, argument, shift)
     {
     }
 }

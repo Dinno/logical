@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Logical.Ast;
+namespace LogicalParser.Ast.Nodes;
 
 public class Production : AbstractionOrProduction
 {

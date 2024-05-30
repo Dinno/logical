@@ -1,4 +1,4 @@
-namespace Logical.Ast;
+namespace LogicalParser.Ast.Nodes;
 
 public abstract class Node
 {

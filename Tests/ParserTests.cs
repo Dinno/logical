@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Logical.Ast;
+using LogicalParser.Ast.Nodes;
 
 namespace Tests;
 
