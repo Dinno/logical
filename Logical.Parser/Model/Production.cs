@@ -1,4 +1,4 @@
-﻿namespace Logical.Model;
+﻿namespace LogicalParser.Model;
 
 public class Production : BinaryNode
 {

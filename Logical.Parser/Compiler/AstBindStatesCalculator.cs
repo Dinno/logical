@@ -1,12 +1,11 @@
-﻿using Logical.Ast;
-using Application = Logical.Ast.Application;
+﻿using LogicalParser.Ast;
+using LogicalParser.Ast.Nodes;
+using Application = LogicalParser.Ast.Nodes.Application;
 
-namespace Logical.Compiler;
+namespace LogicalParser.Compiler;
 
-public struct AstBindStatesCalculator : IAstVisitor<int, int>
+public readonly struct AstBindStatesCalculator : IAstVisitor<int, int>
 {
-    private int _level = 0;
-
     /// <summary>
     /// Is used to count variable references and to store variable depths 
     /// </summary>
@@ -22,17 +21,17 @@ public struct AstBindStatesCalculator : IAstVisitor<int, int>
         traversal.Traverse(ast);
     }
 
-    public int AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<int> bindingInfo, int body, int type, int annotation)
+    public int AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<int> bindingInfo, int body, int? type, int? annotation)
     {
         node.IsUnbound = bindingInfo.Data == 0;
         return 0;
     }
-    public int UnboundAbstractionOrProductionOut(AbstractionOrProduction node, int level, int body, int type, int annotation)
+    public int UnboundAbstractionOrProductionOut(AbstractionOrProduction node, int level, int body, int? type, int? annotation)
     {
         node.IsUnbound = true;
         return 0;
     }
-    public int ApplicationOut(Application node, int function, int argument, int annotation) => 0;
+    public int ApplicationOut(Application node, int function, int argument, int? annotation) => 0;
     public int PairOut(Pair node, int left, int right) => 0;
     public int ParenthesesOut(Parentheses node, int @internal) => 0;
     public int Variable(Variable node, List<BindingInfo<int>> bindings)
