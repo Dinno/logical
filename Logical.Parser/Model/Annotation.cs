@@ -1,8 +1,3 @@
 ﻿namespace Logical.Parser.Model;
 
-public class Annotation : BinaryNode
-{
-    public Annotation(Node annotated, Node annotation, int shift) : base(annotated, annotation, shift)
-    {
-    }
-}
+public class Annotation(Node annotated, Node annotation, int shift) : BinaryNode(annotated, annotation, shift);

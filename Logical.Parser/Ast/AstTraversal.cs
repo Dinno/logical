@@ -7,8 +7,8 @@
 /// of binding states of abstractions and productions. When binding states are already calculated
 /// number of binding levels may be smaller than when they are not, because we don't count
 /// unbound (not having bound variables) abstractions and productions as levels</remarks>
-public class AstTraversal<TBinding, TNode, TAstVisitor>
-    where TNode: struct
+public class AstTraversal<TBinding, TNode, TAstVisitor>(TAstVisitor astVisitor)
+    where TNode : struct
     where TAstVisitor : IAstVisitor<TBinding, TNode>
 {
     private int _level;
@@ -17,12 +17,7 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
     /// Is used to count variable references and to store variable depths 
     /// </summary>
     private readonly Dictionary<string, List<BindingInfo<TBinding>>> _variables = new();
-    private readonly TAstVisitor _astVisitor;
-
-    public AstTraversal(TAstVisitor astVisitor)
-    {
-        _astVisitor = astVisitor;
-    }
+    private readonly TAstVisitor _astVisitor = astVisitor;
 
     public TNode Traverse(Nodes.Node ast)
     {

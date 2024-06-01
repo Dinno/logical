@@ -2,7 +2,8 @@
 
 namespace Logical.Parser.Ast.Nodes;
 
-public class Production : AbstractionOrProduction
+public class Production(Node argumentType, Node resultType, string? variableName = null, Node? annotation = null)
+    : AbstractionOrProduction(resultType, variableName, argumentType, annotation)
 {
     public Node ArgumentType
     {
@@ -13,9 +14,4 @@ public class Production : AbstractionOrProduction
         }
     }
     public Node ResultType => Body;
-
-    public Production(Node argumentType, Node resultType, string? variableName = null, Node? annotation = null) :
-        base(resultType, variableName, argumentType, annotation)
-    {
-    }
 }

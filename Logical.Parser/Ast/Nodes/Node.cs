@@ -1,11 +1,6 @@
 namespace Logical.Parser.Ast.Nodes;
 
-public abstract class Node
+public abstract class Node(Node? annotation)
 {
-    public readonly Node? Annotation;
-
-    protected Node(Node? annotation)
-    {
-        Annotation = annotation;
-    }
+    public readonly Node? Annotation = annotation;
 }

@@ -1,8 +1,4 @@
 ﻿namespace Logical.Parser.Ast.Nodes;
 
-public class Abstraction : AbstractionOrProduction
-{
-    public Abstraction(string? variableName, Node body, Node? type = null, Node? annotation = null)
-        : base(body, variableName, type, annotation)
-    {}
-}
+public class Abstraction(string? variableName, Node body, Node? type = null, Node? annotation = null)
+    : AbstractionOrProduction(body, variableName, type, annotation);

@@ -1,11 +1,6 @@
 ﻿namespace Logical.Parser.Model;
 
-public abstract class Abstraction : Node
+public abstract class Abstraction(Node body) : Node
 {
-    public readonly Node Body;
-
-    public Abstraction(Node body)
-    {
-        Body = body;
-    }
+    public readonly Node Body = body;
 }
