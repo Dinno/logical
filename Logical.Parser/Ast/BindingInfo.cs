@@ -1,4 +1,4 @@
-﻿namespace LogicalParser.Ast;
+﻿namespace Logical.Parser.Ast;
 
 public struct BindingInfo<T>
 {

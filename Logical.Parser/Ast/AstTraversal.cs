@@ -1,6 +1,4 @@
-﻿using LogicalParser.Ast.Nodes;
-
-namespace LogicalParser.Ast;
+﻿namespace Logical.Parser.Ast;
 
 /// <summary>
 /// Implements traversal of AST using visitor pattern
@@ -26,18 +24,18 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
         _astVisitor = astVisitor;
     }
 
-    public TNode Traverse(Node ast)
+    public TNode Traverse(Nodes.Node ast)
     {
         return TraverseRec(ast);
     }
 
-    private TNode TraverseRec(Node ast)
+    private TNode TraverseRec(Nodes.Node ast)
     {
         while (true)
         {
             switch (ast)
             {
-                case AbstractionOrProduction abstractionOrProduction:
+                case Nodes.AbstractionOrProduction abstractionOrProduction:
                 {
                     TNode? type = default; 
                     if (abstractionOrProduction.Type is not null)
@@ -72,7 +70,7 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
 
                     return _astVisitor.AbstractionOrProductionOut(abstractionOrProduction, bindingInfo, body2, type, annotation);
                 }
-                case Application application:
+                case Nodes.Application application:
                 {
                     var function = TraverseRec(application.Function);
                     var argument = TraverseRec(application.Argument);
@@ -81,7 +79,7 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
                         TraverseRec(application.Annotation);
                     return _astVisitor.ApplicationOut(application, function, argument, annotation);
                 }
-                case Pair pair:
+                case Nodes.Pair pair:
                 {
                     var left = TraverseRec(pair.Left);
                     var right = TraverseRec(pair.Right);
@@ -89,19 +87,19 @@ public class AstTraversal<TBinding, TNode, TAstVisitor>
                         TraverseRec(pair.Annotation);
                     return _astVisitor.PairOut(pair, left, right);
                 }
-                case Parentheses parentheses:
+                case Nodes.Parentheses parentheses:
                 {
                     var intern = TraverseRec(parentheses.Node);
                     if (parentheses.Annotation is not null)
                         TraverseRec(parentheses.Annotation);
                     return _astVisitor.ParenthesesOut(parentheses, intern);
                 }
-                case Variable variable:
+                case Nodes.Variable variable:
                 {
                     var varList = _variables[variable.Name];
                     return _astVisitor.Variable(variable, varList);
                 }
-                case DecimalLiteral decimalLiteral:
+                case Nodes.DecimalLiteral decimalLiteral:
                 {
                     return _astVisitor.DecimalLiteral(decimalLiteral);
                 }

@@ -1,16 +1,9 @@
-﻿using LogicalParser.Model;
-using QuikGraph.Collections;
+﻿using QuikGraph.Collections;
 
-namespace LogicalParser.Compiler;
+namespace Logical.Parser.Compiler;
 
-public readonly struct CompiledSubtree
+public readonly struct CompiledSubtree(Model.Node node, FibonacciHeap<int, int> references)
 {
-    public readonly Node Node;
-    public readonly FibonacciHeap<int, int> References;
-
-    public CompiledSubtree(Node node, FibonacciHeap<int, int> references)
-    {
-        Node = node;
-        References = references;
-    }
+    public readonly Model.Node Node = node;
+    public readonly FibonacciHeap<int, int> References = references;
 }

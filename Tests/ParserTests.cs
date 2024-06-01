@@ -1,5 +1,5 @@
 using FluentAssertions;
-using LogicalParser.Ast.Nodes;
+using Logical.Parser.Ast.Nodes;
 
 namespace Tests;
 
@@ -85,7 +85,7 @@ public class ParserTests
     [Theory, MemberData(nameof(CorrectSamples))]
     public void Parse_CorrectProgram_CorrectAst(string program, Node astReference)
     {
-        var parser = new Logical.Parser();
+        var parser = new Logical.Parser.Parser();
         var ast = parser.Parse(program);
         ast.Should().BeEquivalentTo(astReference, options => options.RespectingRuntimeTypes());
     }
