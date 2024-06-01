@@ -1,20 +1,14 @@
-﻿using LogicalParser.Ast;
-using LogicalParser.Ast.Nodes;
-using LogicalParser.Model;
-using QuikGraph.Collections;
-using Application = LogicalParser.Model.Application;
-using Node = LogicalParser.Ast.Nodes.Node;
-using Variable = LogicalParser.Ast.Nodes.Variable;
+﻿using QuikGraph.Collections;
 
-namespace LogicalParser.Compiler;
+namespace Logical.Parser.Compiler;
 
-public class Compiler : IAstVisitor<int, CompiledSubtree>
+public class Compiler : Ast.IAstVisitor<int, CompiledSubtree>
 {
     public List<CompilationError> Errors { get; } = new();
 
-    public CompiledSubtree Compile(Node ast)
+    public CompiledSubtree Compile(Ast.Nodes.Node ast)
     {
-        var traversal = new AstTraversal<int, CompiledSubtree, Compiler>(this);
+        var traversal = new Ast.AstTraversal<int, CompiledSubtree, Compiler>(this);
         return traversal.Traverse(ast);
     }
 
@@ -25,13 +19,13 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
         {
         }
 
-        return new CompiledSubtree(new BoundAbstraction(body.Node), body.References);
+        return new CompiledSubtree(new Model.BoundAbstraction(body.Node), body.References);
     }
 
     private static CompiledSubtree BuildAnnotation(CompiledSubtree annotated, CompiledSubtree annotation)
     {
         var references = CalcBinary(annotated, annotation, out var shift);
-        return new CompiledSubtree(new Annotation(annotated.Node, annotation.Node, shift), references);
+        return new CompiledSubtree(new Model.Annotation(annotated.Node, annotation.Node, shift), references);
     }
 
     private static CompiledSubtree BuildAnnotation(CompiledSubtree annotated, CompiledSubtree? annotation)
@@ -44,7 +38,7 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
     private static CompiledSubtree BuildApplication(CompiledSubtree function, CompiledSubtree argument)
     {
         var references = CalcBinary(function, argument, out var shift);
-        return new CompiledSubtree(new Application(function.Node, argument.Node, shift), references);
+        return new CompiledSubtree(new Model.Application(function.Node, argument.Node, shift), references);
     }
 
     private static FibonacciHeap<int, int> CalcBinary(CompiledSubtree annotated, CompiledSubtree annotation,
@@ -66,7 +60,7 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
             : abstraction;
     }
 
-    public CompiledSubtree AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<int> bindingInfo,
+    public CompiledSubtree AbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, Ast.BindingInfo<int> bindingInfo,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
         var abstraction = BuildBoundAbstraction(body, bindingInfo.Level);
@@ -74,10 +68,10 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
-    public CompiledSubtree UnboundAbstractionOrProductionOut(AbstractionOrProduction node, int level,
+    public CompiledSubtree UnboundAbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, int level,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
-        var abstraction = new CompiledSubtree(new UnboundAbstraction(body.Node), body.References);
+        var abstraction = new CompiledSubtree(new Model.UnboundAbstraction(body.Node), body.References);
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
@@ -87,41 +81,41 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
         return BuildAnnotation(BuildApplication(function, argument), annotation);
     }
 
-    public CompiledSubtree PairOut(Pair node, CompiledSubtree left, CompiledSubtree right)
+    public CompiledSubtree PairOut(Ast.Nodes.Pair node, CompiledSubtree left, CompiledSubtree right)
     {
         throw new NotImplementedException();
     }
 
-    public CompiledSubtree ParenthesesOut(Parentheses node, CompiledSubtree @internal)
+    public CompiledSubtree ParenthesesOut(Ast.Nodes.Parentheses node, CompiledSubtree @internal)
     {
         throw new NotImplementedException();
     }
 
-    public CompiledSubtree Variable(Variable node, List<BindingInfo<int>> bindings)
+    public CompiledSubtree Variable(Ast.Nodes.Variable node, List<Ast.BindingInfo<int>> bindings)
     {
         var references = HeapUtil.EmptyHeap;
         references.Enqueue(bindings[^1].Level, 0);
         return new CompiledSubtree(new Model.Variable(), references);
     }
 
-    public CompiledSubtree DecimalLiteral(DecimalLiteral node)
+    public CompiledSubtree DecimalLiteral(Ast.Nodes.DecimalLiteral node)
     {
         if (int.TryParse(node.Value, out var value))
             return Compile(BuildIntegerBinaryNumber(value));
 
         Errors.Add(new CompilationError(CompilationErrorType.DecimalLiteralOverflow));
 
-        return new CompiledSubtree(new Error(Errors.Count - 1), HeapUtil.EmptyHeap);
+        return new CompiledSubtree(new Model.Error(Errors.Count - 1), HeapUtil.EmptyHeap);
     }
 
-    private static Node Fun1(string name, Node body)
+    private static Ast.Nodes.Application Fun1(string name, Ast.Nodes.Node body)
     {
-        return new Ast.Nodes.Application(new Variable(name), body);
+        return new Ast.Nodes.Application(new Ast.Nodes.Variable(name), body);
     }
 
-    private static Node Var(string name)
+    private static Ast.Nodes.Variable Var(string name)
     {
-        return new Variable(name);
+        return new Ast.Nodes.Variable(name);
     }
 
     /// <summary>
@@ -133,7 +127,7 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
     /// Representation of such numbers is taken from the Coq library.
     /// https://coq.inria.fr/library/Coq.Numbers.BinNums.html
     /// </remarks>
-    private static Node BuildIntegerBinaryNumber(int value)
+    private static Ast.Nodes.Node BuildIntegerBinaryNumber(int value)
     {
         if (value == 0)
             return Var("#Z0");
@@ -151,7 +145,7 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
     /// Representation of such numbers is taken from the Coq library.
     /// https://coq.inria.fr/library/Coq.Numbers.BinNums.html
     /// </remarks>
-    private static Node BuildNaturalBinaryNumber(uint value)
+    private static Ast.Nodes.Node BuildNaturalBinaryNumber(uint value)
     {
         if (value == 0)
             throw new ArgumentException("Value must be strictly positive", nameof(value));
@@ -162,7 +156,7 @@ public class Compiler : IAstVisitor<int, CompiledSubtree>
             cnt--;
         }
 
-        var result = Var("#xH");
+        Ast.Nodes.Node result = Var("#xH");
         while (cnt != 0)
         {
             var bit = value & 0x80000000;

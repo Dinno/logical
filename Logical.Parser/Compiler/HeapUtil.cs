@@ -1,6 +1,6 @@
 ﻿using QuikGraph.Collections;
 
-namespace LogicalParser.Compiler;
+namespace Logical.Parser.Compiler;
 
 public static class HeapUtil
 {

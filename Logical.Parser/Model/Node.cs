@@ -1,4 +1,4 @@
-﻿namespace LogicalParser.Model;
+﻿namespace Logical.Parser.Model;
 
 public abstract class Node
 {

@@ -1,5 +1,5 @@
-﻿@using Logical.Ast
-@namespace Logical
+﻿@using Logical.Parser.Ast.Nodes
+@namespace Logical.Parser
 @classname Parser
 @ignorecase false
 

@@ -1,6 +1,4 @@
-﻿using LogicalParser.Ast.Nodes;
-
-namespace LogicalParser.Ast;
+﻿namespace Logical.Parser.Ast;
 
 public interface IAstVisitor<TBinding, TNode>
     where TNode: struct
@@ -14,7 +12,7 @@ public interface IAstVisitor<TBinding, TNode>
     /// <param name="body"></param>
     /// <param name="type">Data returned by type subtree visitor</param>
     /// <param name="annotation">Data returned by annotation subtree visitor</param>
-    TNode AbstractionOrProductionOut(AbstractionOrProduction node, BindingInfo<TBinding> bindingInfo, TNode body, TNode? type, TNode? annotation);
+    TNode AbstractionOrProductionOut(Nodes.AbstractionOrProduction node, BindingInfo<TBinding> bindingInfo, TNode body, TNode? type, TNode? annotation);
 
     /// <summary>
     /// Is called when we go out of abstraction or production node.
@@ -25,11 +23,11 @@ public interface IAstVisitor<TBinding, TNode>
     /// <param name="body"></param>
     /// <param name="type"></param>
     /// <param name="annotation"></param>
-    TNode UnboundAbstractionOrProductionOut(AbstractionOrProduction node, int level, TNode body, TNode? type, TNode? annotation);
+    TNode UnboundAbstractionOrProductionOut(Nodes.AbstractionOrProduction node, int level, TNode body, TNode? type, TNode? annotation);
     
-    TNode ApplicationOut(Application node, TNode function, TNode argument, TNode? annotation);
-    TNode PairOut(Pair node, TNode left, TNode right);
-    TNode ParenthesesOut(Parentheses node, TNode @internal);
+    TNode ApplicationOut(Nodes.Application node, TNode function, TNode argument, TNode? annotation);
+    TNode PairOut(Nodes.Pair node, TNode left, TNode right);
+    TNode ParenthesesOut(Nodes.Parentheses node, TNode @internal);
 
     /// <summary>
     /// Is called when we visit "variable" AST node 
@@ -39,9 +37,9 @@ public interface IAstVisitor<TBinding, TNode>
     ///     may be bound (Usually to the last one)</param>
     /// <remarks>It should be taken into account that list of bindings may contain mixed
     /// abstraction and production bindings</remarks>
-    TNode Variable(Variable node, List<BindingInfo<TBinding>> bindings);
+    TNode Variable(Nodes.Variable node, List<BindingInfo<TBinding>> bindings);
     
-    TNode DecimalLiteral(DecimalLiteral node);
+    TNode DecimalLiteral(Nodes.DecimalLiteral node);
     
     TBinding CreateBindingData();
 }

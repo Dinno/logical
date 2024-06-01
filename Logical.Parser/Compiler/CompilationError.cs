@@ -1,4 +1,4 @@
-﻿namespace LogicalParser.Compiler;
+﻿namespace Logical.Parser.Compiler;
 
 public readonly struct CompilationError
 {
