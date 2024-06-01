@@ -1,11 +1,6 @@
 ﻿namespace Logical.Parser.Model;
 
-public class Type : Node
+public class Type(int level) : Node
 {
-    public readonly int Level;
-    
-    public Type(int level)
-    {
-        Level = level;
-    }
+    public readonly int Level = level;
 }

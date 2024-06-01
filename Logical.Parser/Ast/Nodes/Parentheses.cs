@@ -1,11 +1,6 @@
 ﻿namespace Logical.Parser.Ast.Nodes;
 
-public class Parentheses : Node
+public class Parentheses(Node node, Node? annotation = null) : Node(annotation)
 {
-    public readonly Node Node;
-
-    public Parentheses(Node node, Node? annotation = null) : base(annotation)
-    {
-        Node = node;
-    }
+    public readonly Node Node = node;
 }

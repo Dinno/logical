@@ -1,11 +1,6 @@
 ﻿namespace Logical.Parser.Model;
 
-public class Error : Node
+public class Error(int index) : Node
 {
-    public readonly int Index;
-    
-    public Error(int index)
-    {
-        Index = index;
-    }
+    public readonly int Index = index;
 }

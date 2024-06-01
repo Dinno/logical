@@ -2,20 +2,14 @@
 
 namespace Logical.Parser.Ast.Nodes;
 
-public class AbstractionOrProduction : Node
+public class AbstractionOrProduction(Node body, string? variableName, Node? type = null, Node? annotation = null)
+    : Node(annotation)
 {
-    public readonly string? VariableName;
-    public readonly Node Body;
-    public readonly Node? Type;
+    public readonly string? VariableName = variableName;
+    public readonly Node Body = body;
+    public readonly Node? Type = type;
     private bool _isUnbound;
 
-    public AbstractionOrProduction(Node body, string? variableName, Node? type = null, Node? annotation = null)
-        : base(annotation)
-    {
-        VariableName = variableName;
-        Body = body;
-        Type = type;
-    }
     public bool IsUnbound
     {
         get => _isUnbound;

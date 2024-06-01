@@ -1,8 +1,3 @@
 ﻿namespace Logical.Parser.Model;
 
-public class UnboundAbstraction : Abstraction
-{
-    public UnboundAbstraction(Node body) : base(body)
-    {
-    }
-}
+public class UnboundAbstraction(Node body) : Abstraction(body);

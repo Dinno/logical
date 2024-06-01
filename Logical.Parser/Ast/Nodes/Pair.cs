@@ -1,13 +1,7 @@
 ﻿namespace Logical.Parser.Ast.Nodes;
 
-public class Pair : Node
+public class Pair(Node left, Node right, Node? annotation = null) : Node(annotation)
 {
-    public readonly Node Left;
-    public readonly Node Right;
-
-    public Pair(Node left, Node right, Node? annotation = null) : base(annotation)
-    {
-        Left = left;
-        Right = right;
-    }
+    public readonly Node Left = left;
+    public readonly Node Right = right;
 }

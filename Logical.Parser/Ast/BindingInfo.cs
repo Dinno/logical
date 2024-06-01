@@ -1,13 +1,7 @@
 ﻿namespace Logical.Parser.Ast;
 
-public struct BindingInfo<T>
+public struct BindingInfo<T>(int level, T data)
 {
-    public readonly int Level;
-    public T Data;
-
-    public BindingInfo(int level, T data)
-    {
-        Level = level;
-        Data = data;
-    }
+    public readonly int Level = level;
+    public T Data = data;
 }
