@@ -1,15 +1,15 @@
-﻿using QuikGraph.Collections;
+﻿using Logical.Parser.Ast;
+using QuikGraph.Collections;
 
 namespace Logical.Parser.Compiler;
 
-public class Compiler : Ast.IAstVisitor<int, CompiledSubtree>
+public class Compiler : FullAstVisitor<int, CompiledSubtree>
 {
-    public List<CompilationError> Errors { get; } = new();
+    private List<CompilationError> Errors { get; } = [];
 
     public CompiledSubtree Compile(Ast.Nodes.Node ast)
     {
-        var traversal = new Ast.AstTraversal<int, CompiledSubtree, Compiler>(this);
-        return traversal.Traverse(ast);
+        return ast.Visit(this);
     }
 
     private static CompiledSubtree BuildBoundAbstraction(CompiledSubtree body, int level)
@@ -60,7 +60,7 @@ public class Compiler : Ast.IAstVisitor<int, CompiledSubtree>
             : abstraction;
     }
 
-    public CompiledSubtree AbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, Ast.BindingInfo<int> bindingInfo,
+    protected override CompiledSubtree AbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, Ast.BindingInfo<int> bindingInfo,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
         var abstraction = BuildBoundAbstraction(body, bindingInfo.Level);
@@ -68,37 +68,37 @@ public class Compiler : Ast.IAstVisitor<int, CompiledSubtree>
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
-    public CompiledSubtree UnboundAbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, int level,
+    protected override CompiledSubtree UnboundAbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, int level,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
         var abstraction = new CompiledSubtree(new Model.UnboundAbstraction(body.Node), body.References);
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
-    public CompiledSubtree ApplicationOut(Ast.Nodes.Application node, CompiledSubtree function,
+    protected override CompiledSubtree ApplicationOut(Ast.Nodes.Application node, CompiledSubtree function,
         CompiledSubtree argument, CompiledSubtree? annotation)
     {
         return BuildAnnotation(BuildApplication(function, argument), annotation);
     }
 
-    public CompiledSubtree PairOut(Ast.Nodes.Pair node, CompiledSubtree left, CompiledSubtree right)
+    protected override CompiledSubtree PairOut(Ast.Nodes.Pair node, CompiledSubtree left, CompiledSubtree right)
     {
         throw new NotImplementedException();
     }
 
-    public CompiledSubtree ParenthesesOut(Ast.Nodes.Parentheses node, CompiledSubtree @internal)
+    protected override CompiledSubtree ParenthesesOut(Ast.Nodes.Parentheses node, CompiledSubtree @internal)
     {
         throw new NotImplementedException();
     }
 
-    public CompiledSubtree Variable(Ast.Nodes.Variable node, List<Ast.BindingInfo<int>> bindings)
+    protected override CompiledSubtree Variable(Ast.Nodes.Variable node, List<Ast.BindingInfo<int>> bindings)
     {
         var references = HeapUtil.EmptyHeap;
         references.Enqueue(bindings[^1].Level, 0);
         return new CompiledSubtree(new Model.Variable(), references);
     }
 
-    public CompiledSubtree DecimalLiteral(Ast.Nodes.DecimalLiteral node)
+    public override CompiledSubtree Visit(Ast.Nodes.DecimalLiteral node)
     {
         if (int.TryParse(node.Value, out var value))
             return Compile(BuildIntegerBinaryNumber(value));
@@ -168,7 +168,7 @@ public class Compiler : Ast.IAstVisitor<int, CompiledSubtree>
         return result;
     }
 
-    public int CreateBindingData()
+    protected override int CreateBindingData()
     {
         return 0;
     }
