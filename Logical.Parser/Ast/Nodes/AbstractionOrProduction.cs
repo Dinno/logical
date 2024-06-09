@@ -21,4 +21,9 @@ public class AbstractionOrProduction(Node body, string? variableName, Node? type
             _isUnbound = value;
         }
     }
+
+    public override TResult Visit<TResult>(IAstVisitor<TResult> astVisitor)
+    {
+        return astVisitor.Visit(this);
+    }
 }
