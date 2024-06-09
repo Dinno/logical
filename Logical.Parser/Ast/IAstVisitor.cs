@@ -22,6 +22,16 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
     /// </summary>
     private readonly Dictionary<string, List<BindingInfo<TBinding>>> _variables = new();
 
+    public FullAstVisitor()
+    {
+    }
+
+    public FullAstVisitor(int initialLevel, Dictionary<string, List<BindingInfo<TBinding>>> initialVariables)
+    {
+        _level = initialLevel;
+        _variables = initialVariables;
+    }
+
 
     public TNode Visit(Nodes.AbstractionOrProduction node)
     {
@@ -124,7 +134,8 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
         TNode? annotation) =>
         default;
 
-    protected virtual TNode ApplicationOut(Nodes.Application node, TNode function, TNode argument, TNode? annotation) => default;
+    protected virtual TNode ApplicationOut(Nodes.Application node, TNode function, TNode argument, TNode? annotation) =>
+        default;
 
     protected virtual TNode PairOut(Nodes.Pair node, TNode left, TNode right) => default;
 

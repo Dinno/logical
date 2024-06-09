@@ -7,6 +7,16 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
 {
     private List<CompilationError> Errors { get; } = [];
 
+    /// <summary>
+    /// Creates a new compiler instance.
+    /// </summary>
+    /// <param name="initialLevel">Initial level in the lambda tree</param>
+    /// <param name="initialVariables">Initial state of variable bindings. It will be modified!</param>
+    public Compiler(int initialLevel, Dictionary<string, List<BindingInfo<int>>> initialVariables) : base(initialLevel,
+        initialVariables)
+    {
+    }
+
     public CompiledSubtree Compile(Ast.Nodes.Node ast)
     {
         return ast.Visit(this);
@@ -60,7 +70,8 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
             : abstraction;
     }
 
-    protected override CompiledSubtree AbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, Ast.BindingInfo<int> bindingInfo,
+    protected override CompiledSubtree AbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node,
+        Ast.BindingInfo<int> bindingInfo,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
         var abstraction = BuildBoundAbstraction(body, bindingInfo.Level);
@@ -68,7 +79,8 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
-    protected override CompiledSubtree UnboundAbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node, int level,
+    protected override CompiledSubtree UnboundAbstractionOrProductionOut(Ast.Nodes.AbstractionOrProduction node,
+        int level,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
         var abstraction = new CompiledSubtree(new Model.UnboundAbstraction(body.Node), body.References);
@@ -150,10 +162,11 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         if (value == 0)
             throw new ArgumentException("Value must be strictly positive", nameof(value));
 
-        var cnt = 32;
-        while (cnt != 0 && (value <<= 1) == 0)
+        var cnt = 31;
+        while ((value & 0x80000000) == 0)
         {
             cnt--;
+            value <<= 1;
         }
 
         Ast.Nodes.Node result = Var("#xH");
