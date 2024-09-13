@@ -58,7 +58,6 @@ User = TYPE
     Boolean;
 // Analogous to: User = String => Integer => Boolean;
 
-todo:
 
 ```
 
@@ -74,3 +73,21 @@ Expression: a => a a => a
 Should it be interpreted as: a => a (a => a) 
 or as: (a => a) (a => a)
 Answer: a => a (a => a)
+
+
+# Использование исчисления конструкций для построения запросов к БД
+
+Variant 1
+
+SetA = (name: String, isGood: Bool) -> Bool
+tableA = 
+	("Uasia", true) => true |
+	("Koba", false) => true;
+GoodQuery =
+
+Variant 2
+
+SetA = (name: String, isGood: Bool) -> Prop
+tableA = 
+	("Uasia", true) => True |
+	("Koba", false) => True;

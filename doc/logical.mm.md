@@ -10,6 +10,12 @@
 
 ## Deployment
 
+- Config generation
+- Deployment scripts 
+  - generation
+  - execution
+- Future: functional deployment
+
 ## Testing
 
 - Usually generates correct code

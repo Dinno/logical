@@ -25,12 +25,12 @@ x, X, var1, \_a - alfanumeric string (?) representing reference to variables wit
 ## Function declarations
 
 ### Examples
-`x => x`, `x, y => x * y`, `_ => null`, `x; x * x`, `(1, x) => x`
+`x => x`, `x, y => x * y`, `_ => null`, `x; y => x * y`, `(1, x) => x`
 
-### Generation
+### Semantic tree generation
 Simple function declaration generates abstraction annotated by name of declared variable. `x => x` converts to $(\lambda v)_{name("x")}$. Underline instead of variable name leads to removal of name annotation and makes resulting abstraction unboundable: `_ => null` $\rArr$ $\Lambda v$
 
-Pattern in a left part of function definition leads to generation of pattern matching proxy???
+Pattern in a left part of function definition leads to use of destructuring function in semantic tree. `x, y => x * y` $\rArr$ $(\lambda v)(v_0, v_1)$
 
 ## Function Applications
 
