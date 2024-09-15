@@ -1,5 +1,3 @@
 ﻿namespace Logical.Parser.Model;
 
-public abstract class Node
-{
-}
+public abstract class Node;

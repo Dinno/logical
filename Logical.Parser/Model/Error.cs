@@ -2,5 +2,5 @@
 
 public class Error(int index) : Node
 {
-    public readonly int Index = index;
+    public int Index { get; } = index;
 }
