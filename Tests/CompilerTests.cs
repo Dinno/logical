@@ -8,13 +8,12 @@ namespace Tests;
 
 public class CompilerTests
 {
-    [Fact]
-    public void Compiler()
-    {
-        var ast = new Abstraction("a", new DecimalLiteral("1"));
-        ast.IsUnbound.Should().Be(false);
+    private Dictionary<string, List<BindingInfo<int>>> _initialVariables;
+    private int _initialDepth;
 
-        var initialVariables = new Dictionary<string, List<BindingInfo<int>>>
+    public CompilerTests()
+    {
+        _initialVariables = new Dictionary<string, List<BindingInfo<int>>>
         {
             { "#Zpos", [new BindingInfo<int>(0, 0)] },
             { "#Zneg", [new BindingInfo<int>(1, 0)] },
@@ -22,7 +21,25 @@ public class CompilerTests
             { "#xI", [new BindingInfo<int>(3, 0)] },
             { "#xH", [new BindingInfo<int>(4, 0)] },
         };
-        var compiler = new Compiler(4, initialVariables);
+        _initialDepth = 4;
+    }
+
+    [Fact]
+    public void Compiler_AbstractionWithNumber()
+    {
+        var ast = new Abstraction("a", new DecimalLiteral("1"));
+        ast.IsUnbound.Should().Be(false);
+        var compiler = new Compiler(_initialDepth, _initialVariables);
+        var model = compiler.Compile(ast);
+        
+        Snapshot.Match(model.Node);
+    }
+
+    [Fact]
+    public void Compiler_AbstractionWithVar()
+    {
+        var ast = new Abstraction("a", new Variable("a"));
+        var compiler = new Compiler(_initialDepth, _initialVariables);
         var model = compiler.Compile(ast);
         
         Snapshot.Match(model.Node);

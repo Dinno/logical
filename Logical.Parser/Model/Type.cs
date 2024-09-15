@@ -2,5 +2,5 @@
 
 public class Type(int level) : Node
 {
-    public readonly int Level = level;
+    public int Level { get; } = level;
 }

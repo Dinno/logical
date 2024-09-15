@@ -1,5 +1,3 @@
 ﻿namespace Logical.Parser.Model;
 
-public class Variable : Node
-{
-}
+public class Variable : Node;

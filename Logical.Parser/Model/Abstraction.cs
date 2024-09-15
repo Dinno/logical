@@ -2,5 +2,5 @@
 
 public abstract class Abstraction(Node body) : Node
 {
-    public readonly Node Body = body;
+    public Node Body { get; } = body;
 }
