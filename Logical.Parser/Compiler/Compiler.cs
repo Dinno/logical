@@ -8,10 +8,10 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
     private List<CompilationError> Errors { get; } = [];
 
     /// <summary>
-    /// Creates a new compiler instance.
+    /// Создаёт новый экземпляр компилятора.
     /// </summary>
-    /// <param name="initialLevel">Initial level in the lambda tree</param>
-    /// <param name="initialVariables">Initial state of variable bindings. It will be modified!</param>
+    /// <param name="initialLevel">Начальный уровень в дереве лямбда-выражений</param>
+    /// <param name="initialVariables">Начальное состояние связей переменных. Будет модифицировано!</param>
     public Compiler(int initialLevel, Dictionary<string, List<BindingInfo<int>>> initialVariables) : base(initialLevel,
         initialVariables)
     {
@@ -103,10 +103,19 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Вызывается при выходе из переменной.
+    /// </summary>
+    /// <param name="node">Узел переменной АСД</param>
+    /// <param name="bindings">Список связей этой переменной. Переменная может быть связана с несколькими абстракциями</param>
+    /// <returns>Результат компиляции</returns>
     protected override CompiledSubtree Variable(Ast.Nodes.Variable node, List<Ast.BindingInfo<int>> bindings)
     {
         var references = HeapUtil.EmptyHeap;
-        references.Enqueue(bindings[^1].Level, 0);
+
+        // Пока что мы всегда считаем, что переменная связана с последней абстракцией в списке
+        references.Enqueue(bindings[^1].Level, 0 /* Is not used */);
+
         return new CompiledSubtree(new Model.Variable(), references);
     }
 

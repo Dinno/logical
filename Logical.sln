@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logical", "Logical\Logical.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{0B3BDA92-AB7B-4D42-B6AF-29D499574031}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logical.JavaScript", "Logical.JavaScript\Logical.JavaScript.csproj", "{00BB2F27-797B-4C9A-967A-3517CD0E62F7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FSOntology.vsmdi
@@ -30,6 +32,10 @@ Global
 		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B3BDA92-AB7B-4D42-B6AF-29D499574031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00BB2F27-797B-4C9A-967A-3517CD0E62F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00BB2F27-797B-4C9A-967A-3517CD0E62F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00BB2F27-797B-4C9A-967A-3517CD0E62F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00BB2F27-797B-4C9A-967A-3517CD0E62F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
