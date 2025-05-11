@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Logical.Parser.Ast;
 
 public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>

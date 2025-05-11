@@ -1,4 +1,7 @@
-﻿using Logical.Parser.Ast;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Logical.Parser.Ast;
 using QuikGraph.Collections;
 
 namespace Logical.Parser.Compiler;

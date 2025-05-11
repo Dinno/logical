@@ -1,4 +1,5 @@
-﻿using Logical.Parser.Ast;
+﻿using System.Collections.Generic;
+using Logical.Parser.Ast;
 
 namespace Logical.Parser.Compiler;
 
