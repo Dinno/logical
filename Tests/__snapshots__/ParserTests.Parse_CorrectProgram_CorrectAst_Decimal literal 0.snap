@@ -1,0 +1,10 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.DecimalLiteral, Logical.Ast",
+  "Value": "0",
+  "IntegerBinary": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "#binIntZero",
+    "Annotation": null
+  },
+  "Annotation": null
+}

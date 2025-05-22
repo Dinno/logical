@@ -1,0 +1,50 @@
+﻿@using Logical.Ast.Nodes
+@namespace Logical.Parser
+@classname Parser
+@ignorecase false
+
+expression <Node>
+    = _ a:pair _ (unparsed / "") { a }
+    
+unparsed
+    = s:. #error{ $"Unexpected symbol \"{s}\" encountered!" } 
+
+pair <Node>
+    = l:abstraction _ "," _ r:pair { new Pair(l, r) }
+    / abstraction
+
+abstraction <Node>
+    = n:name _ type:(<Node> ":" _ t:production { t })? _ bound:(<Node> "=" _ b:abstractionInline { b })? _ ";" _ a:abstraction	{ 
+        bound.Count == 0 
+            ? new Abstraction(n, a, type.Count == 0 ? null : type[0]) 
+            : new Application(new Abstraction(n, a, type.Count == 0 ? null : type[0]), bound[0], null) }
+    / abstractionInline
+
+abstractionInline <Node>
+    = n:name _ type:(<Node> ":" _ t:production { t })? _ "=>" _ a:abstractionInline { new Abstraction(n, a, type.Count == 0 ? null : type[0]) }
+    / production
+    
+production <Node>
+    = varName:(n:name _ ":" { n })? _ argType:application _ "->" _ resType:production { new Production(argType, resType, varName.Count == 0 ? null : varName[0]) }
+    / application
+    
+application <Node> -memoize
+    = fun:application _ arg:atom { new Application(fun, arg, null) }
+    / atom  
+    
+atom <Node>
+    = "(" _ a:pair _ ")" { new Parentheses(a) }
+    / DecimalLiteral
+    / variable
+    
+variable <Node>
+    = var:name { new Variable(var, null) }
+    
+name <string>
+    = ([a-z_]i+ [a-z_0-9]i*)
+    
+DecimalLiteral <Node>
+    = lit:([-]? [0-9]+ ("." [0-9]+)?) { new DecimalLiteral(lit, null) }  
+
+_ <int>
+    = [ \t]* { 0 } 

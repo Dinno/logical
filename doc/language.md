@@ -8,9 +8,25 @@ On the model level the language consists of following basic constructions:
 
 But on syntactical level it has additional constructions:
 
-1. Operators
+1. Operators and constructors
 2. Pattern matchers
 3. Literals
+4. Imports and exports
+
+## Operators
+
+* +, -, *, /, % - arithmetics
+* ==, !=, <, <=, >, >= - comparison
+* [], . - indexers
+
+## Constructors
+
+* @{a: Int, b: String} - structure types
+* {a: 1, b: "2"} - structures
+* Int * String - tuple types
+* (2, "dd") - tuples
+* Int[] - array types
+* [2, 3, 4] - arrays
 
 ## Literals
 
@@ -37,3 +53,18 @@ Pattern in a left part of function definition leads to use of destructuring func
 
 `f 1`, `someFunction(1, x)` - Application of function to some value. In second example the
 value is tuple. Generates model: @apply(f, 1), @apply(someFunction, @tuple (@pair 1 x)) where @apply is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
+
+## Imports
+
+Imports are done using special type of function which must always have constant string argument. Syntax:
+module1 = import "module1";
+
+## Exports
+Exports mark variables to be included into structure which will become a module's value
+export f = x => x * x;
+Will be automatically converted into
+f = x => x * x;
+{f}
+To finally become:
+{f: x => x * x}
+In first version of the language exports are not needed, but should be added later.

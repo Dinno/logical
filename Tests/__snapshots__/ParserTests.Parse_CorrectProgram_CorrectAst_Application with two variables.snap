@@ -1,0 +1,14 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.Application, Logical.Ast",
+  "Function": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "a",
+    "Annotation": null
+  },
+  "Argument": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "b",
+    "Annotation": null
+  },
+  "Annotation": null
+}

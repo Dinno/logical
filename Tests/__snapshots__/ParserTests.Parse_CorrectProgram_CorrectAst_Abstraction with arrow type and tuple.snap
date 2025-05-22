@@ -1,0 +1,81 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.Abstraction, Logical.Ast",
+  "VariableName": "set1",
+  "Body": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "set1",
+    "Annotation": null
+  },
+  "Type": {
+    "$type": "Logical.Ast.Nodes.Production, Logical.Ast",
+    "ArgumentType": {
+      "$type": "Logical.Ast.Nodes.Parentheses, Logical.Ast",
+      "Node": {
+        "$type": "Logical.Ast.Nodes.Pair, Logical.Ast",
+        "Left": {
+          "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+          "Name": "Int",
+          "Annotation": null
+        },
+        "Right": {
+          "$type": "Logical.Ast.Nodes.Pair, Logical.Ast",
+          "Left": {
+            "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+            "Name": "Str",
+            "Annotation": null
+          },
+          "Right": {
+            "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+            "Name": "Float",
+            "Annotation": null
+          },
+          "Annotation": null
+        },
+        "Annotation": null
+      },
+      "Annotation": null
+    },
+    "ResultType": {
+      "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+      "Name": "Bool",
+      "Annotation": null
+    },
+    "VariableName": null,
+    "Body": {
+      "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+      "Name": "Bool",
+      "Annotation": null
+    },
+    "Type": {
+      "$type": "Logical.Ast.Nodes.Parentheses, Logical.Ast",
+      "Node": {
+        "$type": "Logical.Ast.Nodes.Pair, Logical.Ast",
+        "Left": {
+          "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+          "Name": "Int",
+          "Annotation": null
+        },
+        "Right": {
+          "$type": "Logical.Ast.Nodes.Pair, Logical.Ast",
+          "Left": {
+            "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+            "Name": "Str",
+            "Annotation": null
+          },
+          "Right": {
+            "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+            "Name": "Float",
+            "Annotation": null
+          },
+          "Annotation": null
+        },
+        "Annotation": null
+      },
+      "Annotation": null
+    },
+    "IsUnbound": false,
+    "Annotation": null
+  },
+  "IsUnbound": false,
+  "Annotation": null
+}

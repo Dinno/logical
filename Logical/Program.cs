@@ -1,9 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Logical.Parser;
+using Newtonsoft.Json;
 
-using Logical;
+var parser = new Parser();
+var ast = parser.Parse("x;x");
+Console.WriteLine("Ast:");
+Console.WriteLine(JsonConvert.SerializeObject(ast)); // Outputs "11.1".
+var compiler = new Compiler();
+var compiled = compiler.Compile(ast);
+Console.WriteLine("Compiled:");
+Console.WriteLine(JsonConvert.SerializeObject(compiled)); // Outputs "11.1".
 
-Console.WriteLine("Hello, World!");
-
-//var parser = new Parser();
-//var result = parser.Parse("1");
-//Console.WriteLine(result); // Outputs "11.1".

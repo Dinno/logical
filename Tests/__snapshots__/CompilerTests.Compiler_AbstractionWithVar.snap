@@ -1,0 +1,6 @@
+﻿{
+  "$type": "Logical.Model.BoundAbstraction, Logical.Model",
+  "Body": {
+    "$type": "Logical.Model.Variable, Logical.Model"
+  }
+}

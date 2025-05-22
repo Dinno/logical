@@ -1,0 +1,19 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.DecimalLiteral, Logical.Ast",
+  "Value": "1",
+  "IntegerBinary": {
+    "$type": "Logical.Ast.Nodes.Application, Logical.Ast",
+    "Function": {
+      "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+      "Name": "#binIntPos",
+      "Annotation": null
+    },
+    "Argument": {
+      "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+      "Name": "#binPosHead",
+      "Annotation": null
+    },
+    "Annotation": null
+  },
+  "Annotation": null
+}

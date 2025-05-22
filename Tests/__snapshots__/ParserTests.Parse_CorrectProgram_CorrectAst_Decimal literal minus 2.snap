@@ -1,0 +1,28 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.DecimalLiteral, Logical.Ast",
+  "Value": "-2",
+  "IntegerBinary": {
+    "$type": "Logical.Ast.Nodes.Application, Logical.Ast",
+    "Function": {
+      "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+      "Name": "#binIntNeg",
+      "Annotation": null
+    },
+    "Argument": {
+      "$type": "Logical.Ast.Nodes.Application, Logical.Ast",
+      "Function": {
+        "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+        "Name": "#binPosZero",
+        "Annotation": null
+      },
+      "Argument": {
+        "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+        "Name": "#binPosHead",
+        "Annotation": null
+      },
+      "Annotation": null
+    },
+    "Annotation": null
+  },
+  "Annotation": null
+}

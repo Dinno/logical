@@ -12,7 +12,7 @@ User = {
  } : unique ["firstName", "secondName"];
 
 Todo = {
-    todoId: Id; // Name implies that this is primary key
+    id: Id; // Name implies that this is primary key
     userId: Id, foreign(User.id); // Name already implies that this is foreign key for user table. But for demonstration purposes we will explicitly specify it.
     text: String;
     isDone: Boolean;
