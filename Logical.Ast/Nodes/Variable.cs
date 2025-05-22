@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Ast.Nodes;
+﻿namespace Logical.Ast.Nodes;
 
 public class Variable(string name, Node? annotation = null) : Node(annotation)
 {

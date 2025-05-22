@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Ast;
+﻿namespace Logical.Ast;
 
 public interface IAstVisitor<out TResult>
     where TResult : struct

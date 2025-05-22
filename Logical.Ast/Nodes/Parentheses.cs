@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Ast.Nodes;
+﻿namespace Logical.Ast.Nodes;
 
 public class Parentheses(Node node, Node? annotation = null) : Node(annotation)
 {

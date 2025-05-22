@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Logical.Parser.Ast;
+using Logical.Ast;
+using Logical.Model;
 using QuikGraph.Collections;
 
-namespace Logical.Parser.Compiler;
+namespace Logical.Parser;
 
 public class Compiler : FullAstVisitor<int, CompiledSubtree>
 {
@@ -13,10 +14,7 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
     /// <summary>
     /// Создаёт новый экземпляр компилятора.
     /// </summary>
-    /// <param name="initialLevel">Начальный уровень в дереве лямбда-выражений</param>
-    /// <param name="initialVariables">Начальное состояние связей переменных. Будет модифицировано!</param>
-    public Compiler(int initialLevel, Dictionary<string, List<BindingInfo<int>>> initialVariables) : base(initialLevel,
-        initialVariables)
+    public Compiler() : base()
     {
     }
 
@@ -32,13 +30,13 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         {
         }
 
-        return new CompiledSubtree(new Model.BoundAbstraction(body.Node), body.References);
+        return new CompiledSubtree(new BoundAbstraction(body.Node), body.References);
     }
 
     private static CompiledSubtree BuildAnnotation(CompiledSubtree annotated, CompiledSubtree annotation)
     {
         var references = CalcBinary(annotated, annotation, out var shift);
-        return new CompiledSubtree(new Model.Annotation(annotated.Node, annotation.Node, shift), references);
+        return new CompiledSubtree(new Annotation(annotated.Node, annotation.Node, shift), references);
     }
 
     private static CompiledSubtree BuildAnnotation(CompiledSubtree annotated, CompiledSubtree? annotation)
@@ -51,17 +49,14 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
     private static CompiledSubtree BuildApplication(CompiledSubtree function, CompiledSubtree argument)
     {
         var references = CalcBinary(function, argument, out var shift);
-        return new CompiledSubtree(new Model.Application(function.Node, argument.Node, shift), references);
+        return new CompiledSubtree(new Application(function.Node, argument.Node, shift), references);
     }
 
-    private static FibonacciHeap<int, int> CalcBinary(CompiledSubtree annotated, CompiledSubtree annotation,
-        out int shift)
+    private static FibonacciHeap<int, int> CalcBinary(CompiledSubtree left, CompiledSubtree right, out int shift)
     {
-        var leftLevel = -annotated.References.Top.Priority;
-        var rightLevel = -annotation.References.Top.Priority;
-        annotated.References.Merge(annotation.References);
-        shift = rightLevel - leftLevel;
-        return annotated.References;
+        shift = right.References.Top.Priority - left.References.Top.Priority;
+        left.References.Merge(right.References);
+        return left.References;
     }
 
     private static CompiledSubtree BuildTypeAnnotation(CompiledSubtree abstraction, CompiledSubtree? type,
@@ -86,7 +81,7 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         int level,
         CompiledSubtree body, CompiledSubtree? type, CompiledSubtree? annotation)
     {
-        var abstraction = new CompiledSubtree(new Model.UnboundAbstraction(body.Node), body.References);
+        var abstraction = new CompiledSubtree(new UnboundAbstraction(body.Node), body.References);
         return BuildTypeAnnotation(abstraction, type, annotation);
     }
 
@@ -117,84 +112,20 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         var references = HeapUtil.EmptyHeap;
 
         // Пока что мы всегда считаем, что переменная связана с последней абстракцией в списке
-        references.Enqueue(bindings[^1].Level, 0 /* Is not used */);
+        references.Enqueue(-bindings[^1].Level, 0 /* Is not used */);
 
-        return new CompiledSubtree(new Model.Variable(), references);
-    }
-
-    public override CompiledSubtree Visit(Ast.Nodes.DecimalLiteral node)
-    {
-        if (int.TryParse(node.Value, out var value))
-            return Compile(BuildIntegerBinaryNumber(value));
-
-        Errors.Add(new CompilationError(CompilationErrorType.DecimalLiteralOverflow));
-
-        return new CompiledSubtree(new Model.Error(Errors.Count - 1), HeapUtil.EmptyHeap);
-    }
-
-    private static Ast.Nodes.Application Fun1(string name, Ast.Nodes.Node body)
-    {
-        return new Ast.Nodes.Application(new Ast.Nodes.Variable(name), body);
-    }
-
-    private static Ast.Nodes.Variable Var(string name)
-    {
-        return new Ast.Nodes.Variable(name);
-    }
-
-    /// <summary>
-    /// Build an AST representation of integer binary number.
-    /// </summary>
-    /// <param name="value">Integer number</param>
-    /// <returns>AST representing the number</returns>
-    /// <remarks>
-    /// Representation of such numbers is taken from the Coq library.
-    /// https://coq.inria.fr/library/Coq.Numbers.BinNums.html
-    /// </remarks>
-    private static Ast.Nodes.Node BuildIntegerBinaryNumber(int value)
-    {
-        if (value == 0)
-            return Var("#Z0");
-        return value > 0
-            ? Fun1("#Zpos", BuildNaturalBinaryNumber((uint)value))
-            : Fun1("#Zneg", BuildNaturalBinaryNumber((uint)-value));
-    }
-
-    /// <summary>
-    /// Build an AST representation of a strictly positive binary number.
-    /// </summary>
-    /// <param name="value">Strictly positive number</param>
-    /// <returns>AST representing the number</returns>
-    /// <remarks>
-    /// Representation of such numbers is taken from the Coq library.
-    /// https://coq.inria.fr/library/Coq.Numbers.BinNums.html
-    /// </remarks>
-    private static Ast.Nodes.Node BuildNaturalBinaryNumber(uint value)
-    {
-        if (value == 0)
-            throw new ArgumentException("Value must be strictly positive", nameof(value));
-
-        var cnt = 31;
-        while ((value & 0x80000000) == 0)
-        {
-            cnt--;
-            value <<= 1;
-        }
-
-        Ast.Nodes.Node result = Var("#xH");
-        while (cnt != 0)
-        {
-            var bit = value & 0x80000000;
-            result = Fun1(bit == 0 ? "#xO" : "#xI", result);
-            value <<= 1;
-            cnt--;
-        }
-
-        return result;
+        return new CompiledSubtree(new Variable(), references);
     }
 
     protected override int CreateBindingData()
     {
         return 0;
+    }
+
+    protected override CompiledSubtree OnDecimalLiteralError()
+    {
+        Errors.Add(new CompilationError(CompilationErrorType.DecimalLiteralOverflow));
+
+        return new CompiledSubtree(new Error(Errors.Count - 1), HeapUtil.EmptyHeap);
     }
 }

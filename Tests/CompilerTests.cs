@@ -1,63 +1,94 @@
-﻿using FluentAssertions;
-using Logical.Parser.Ast;
-using Logical.Parser.Ast.Nodes;
-using Logical.Parser.Compiler;
+﻿using Logical.Ast.Nodes;
 using Snapshooter.Xunit;
 
 namespace Tests;
 
 public class CompilerTests
 {
-    private Dictionary<string, List<BindingInfo<int>>> _initialVariables;
-    private int _initialDepth;
-
-    public CompilerTests()
+    [Fact]
+    public void Compiler_NumberZero()
     {
-        _initialVariables = new Dictionary<string, List<BindingInfo<int>>>
-        {
-            { "#Zpos", [new BindingInfo<int>(0, 0)] },
-            { "#Zneg", [new BindingInfo<int>(1, 0)] },
-            { "#xO", [new BindingInfo<int>(2, 0)] },
-            { "#xI", [new BindingInfo<int>(3, 0)] },
-            { "#xH", [new BindingInfo<int>(4, 0)] },
-        };
-        _initialDepth = 4;
+        var ast = new DecimalLiteral("0");
+
+        var result = TestUtil.Compile(ast);
+
+        Snapshot.Match(result);
     }
 
     [Fact]
-    public void Compiler_AbstractionWithNumber()
+    public void Compiler_NumberOne()
     {
-        var ast = new Abstraction("a", new DecimalLiteral("1"));
-        ast.IsUnbound.Should().Be(false);
-        var compiler = new Compiler(_initialDepth, _initialVariables);
-        var model = compiler.Compile(ast);
+        var ast = new DecimalLiteral("1");
+        
+        var result = TestUtil.Compile(ast);
 
-        Snapshot.Match(model.Node);
+        Snapshot.Match(result);
     }
 
     [Fact]
-    public void Compiler_AbstractionWithVar()
+    public void Compiler_NumberMinusOne()
     {
-        var ast = new Abstraction("a", new Variable("a"));
-        var compiler = new Compiler(_initialDepth, _initialVariables);
-        var model = compiler.Compile(ast);
+        var ast = new DecimalLiteral("-1");
+        
+        var result = TestUtil.Compile(ast);
 
-        Snapshot.Match(model.Node);
+        Snapshot.Match(result);
     }
+
+    [Fact]
+    public void Compiler_NumberTwo()
+    {
+        var ast = new DecimalLiteral("2");
+        
+        var result = TestUtil.Compile(ast);
+
+        Snapshot.Match(result);
+    }
+
+    // [Fact]
+    // public void Compiler_AbstractionWithNumberOne()
+    // {
+    //     var ast = new Abstraction("a", new DecimalLiteral("1"));
+    //     ast.IsUnbound.Should().Be(false);
+    //     var compiler = new Compiler(_initialDepth, _initialVariables);
+    //     var model = compiler.Compile(ast);
+
+    //     Snapshot.Match(model.Node);
+    // }
+
+    // [Fact]
+    // public void Compiler_AbstractionWithNumberTwo()
+    // {
+    //     var ast = new Abstraction("a", new DecimalLiteral("2"));
+    //     ast.IsUnbound.Should().Be(false);
+    //     var compiler = new Compiler(_initialDepth, _initialVariables);
+    //     var model = compiler.Compile(ast);
+
+    //     Snapshot.Match(model.Node);
+    // }
+
+    // [Fact]
+    // public void Compiler_AbstractionWithVar()
+    // {
+    //     var ast = new Abstraction("a", new Variable("a"));
+    //     var compiler = new Compiler(_initialDepth, _initialVariables);
+    //     var model = compiler.Compile(ast);
+
+    //     Snapshot.Match(model.Node);
+    // }
 
     // [Fact]
     // public void Compiler_Variable()
     // {
     //     var ast = new Variable("a");
     //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
-    //     Snapshot.Match(model.Node);
+    //     Assert.Throws<KeyNotFoundException>(() => compiler.Compile(ast));
     // }
 
     // [Fact]
     // public void Compiler_Application()
     // {
-    //     var ast = new Application(new Variable("f"), new Variable("x"));
+    //     var ast = new Application(new Variable("#Zpos"), new Variable("#Zpos"));
     //     var compiler = new Compiler(_initialDepth, _initialVariables);
     //     var model = compiler.Compile(ast);
     //     Snapshot.Match(model.Node);

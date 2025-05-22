@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Logical.Parser.Ast;
+namespace Logical.Ast;
 
 public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
     where TNode : struct
@@ -11,18 +11,7 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
     /// <summary>
     /// Is used to count variable references and to store variable depths 
     /// </summary>
-    private readonly Dictionary<string, List<BindingInfo<TBinding>>> _variables = new();
-
-    public FullAstVisitor()
-    {
-    }
-
-    public FullAstVisitor(int initialLevel, Dictionary<string, List<BindingInfo<TBinding>>> initialVariables)
-    {
-        _level = initialLevel;
-        _variables = initialVariables;
-    }
-
+    private readonly Dictionary<string, List<BindingInfo<TBinding>>> _variables = [];
 
     public TNode Visit(Nodes.AbstractionOrProduction node)
     {
@@ -95,7 +84,10 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
         return Variable(node, varList);
     }
 
-    public virtual TNode Visit(Nodes.DecimalLiteral node) => default;
+    public virtual TNode Visit(Nodes.DecimalLiteral node)
+    {
+        return node.IntegerBinary?.Visit(this) ?? OnDecimalLiteralError();
+    } 
 
     /// <summary>
     /// Is called when we go out of abstraction or production node.
@@ -143,4 +135,6 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
     protected virtual TNode Variable(Nodes.Variable node, List<BindingInfo<TBinding>> bindings) => default;
 
     protected virtual TBinding CreateBindingData() => default;
+
+    protected abstract TNode OnDecimalLiteralError();
 }

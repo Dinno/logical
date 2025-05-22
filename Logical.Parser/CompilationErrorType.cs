@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Compiler;
+﻿namespace Logical.Parser;
 
 public enum CompilationErrorType
 {

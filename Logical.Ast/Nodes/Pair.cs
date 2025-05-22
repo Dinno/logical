@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Ast.Nodes;
+﻿namespace Logical.Ast.Nodes;
 
 public class Pair(Node left, Node right, Node? annotation = null) : Node(annotation)
 {

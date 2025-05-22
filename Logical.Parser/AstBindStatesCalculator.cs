@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Logical.Parser.Ast;
+using Logical.Ast;
 
-namespace Logical.Parser.Compiler;
+namespace Logical.Parser;
 
 public class AstBindStatesCalculator : FullAstVisitor<int, int>
 {
@@ -31,5 +31,10 @@ public class AstBindStatesCalculator : FullAstVisitor<int, int>
         binding.Data++;
         bindings[^1] = binding;
         return default;
+    }
+
+    protected override int OnDecimalLiteralError()
+    {
+        throw new System.NotImplementedException();
     }
 }

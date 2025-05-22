@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Logical.Parser.Ast.Nodes;
+namespace Logical.Ast.Nodes;
 
 public class AbstractionOrProduction(Node body, string? variableName, Node? type = null, Node? annotation = null)
     : Node(annotation)

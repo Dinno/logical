@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Model;
+﻿namespace Logical.Model;
 
 public class BinaryNode(Node left, Node right, int shift) : Node
 {

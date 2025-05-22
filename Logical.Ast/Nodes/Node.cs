@@ -1,4 +1,4 @@
-namespace Logical.Parser.Ast.Nodes;
+namespace Logical.Ast.Nodes;
 
 public abstract class Node(Node? annotation)
 {

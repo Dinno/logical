@@ -30,4 +30,8 @@
       <ProjectReference Include="..\Logical.Parser\Logical.Parser.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="__snapshots__\" />
+    </ItemGroup>
+
 </Project>

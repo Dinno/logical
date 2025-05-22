@@ -1,0 +1,16 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.Abstraction, Logical.Ast",
+  "VariableName": "a",
+  "Body": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "a",
+    "Annotation": null
+  },
+  "Type": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "Type",
+    "Annotation": null
+  },
+  "IsUnbound": false,
+  "Annotation": null
+}

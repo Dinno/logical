@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using Logical.Parser.Ast.Nodes;
-using Logical.Parser.Compiler;
+using Logical.Ast.Nodes;
+using Logical.Parser;
 
 namespace Tests;
 

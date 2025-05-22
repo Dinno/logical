@@ -1,0 +1,25 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.Application, Logical.Ast",
+  "Function": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "a",
+    "Annotation": null
+  },
+  "Argument": {
+    "$type": "Logical.Ast.Nodes.Parentheses, Logical.Ast",
+    "Node": {
+      "$type": "Logical.Ast.Nodes.Abstraction, Logical.Ast",
+      "VariableName": "b",
+      "Body": {
+        "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+        "Name": "c",
+        "Annotation": null
+      },
+      "Type": null,
+      "IsUnbound": false,
+      "Annotation": null
+    },
+    "Annotation": null
+  },
+  "Annotation": null
+}

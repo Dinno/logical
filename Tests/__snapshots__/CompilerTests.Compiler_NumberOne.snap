@@ -1,0 +1,28 @@
+﻿{
+  "$type": "Logical.Model.UnboundAbstraction, Logical.Model",
+  "Body": {
+    "$type": "Logical.Model.BoundAbstraction, Logical.Model",
+    "Body": {
+      "$type": "Logical.Model.UnboundAbstraction, Logical.Model",
+      "Body": {
+        "$type": "Logical.Model.BoundAbstraction, Logical.Model",
+        "Body": {
+          "$type": "Logical.Model.UnboundAbstraction, Logical.Model",
+          "Body": {
+            "$type": "Logical.Model.UnboundAbstraction, Logical.Model",
+            "Body": {
+              "$type": "Logical.Model.Application, Logical.Model",
+              "Left": {
+                "$type": "Logical.Model.Variable, Logical.Model"
+              },
+              "Right": {
+                "$type": "Logical.Model.Variable, Logical.Model"
+              },
+              "Shift": -1
+            }
+          }
+        }
+      }
+    }
+  }
+}

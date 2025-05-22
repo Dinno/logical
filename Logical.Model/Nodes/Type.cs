@@ -1,4 +1,4 @@
-﻿namespace Logical.Parser.Model;
+﻿namespace Logical.Model;
 
 public class Type(int level) : Node
 {

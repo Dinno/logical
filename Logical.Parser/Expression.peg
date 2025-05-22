@@ -1,4 +1,4 @@
-﻿@using Logical.Parser.Ast.Nodes
+﻿@using Logical.Ast.Nodes
 @namespace Logical.Parser
 @classname Parser
 @ignorecase false
@@ -44,7 +44,7 @@ name <string>
     = ([a-z_]i+ [a-z_0-9]i*)
     
 DecimalLiteral <Node>
-    = lit:([0-9]+ ("." [0-9]+)?) { new DecimalLiteral(lit, null) }  
+    = lit:([-]? [0-9]+ ("." [0-9]+)?) { new DecimalLiteral(lit, null) }  
 
 _ <int>
     = [ \t]* { 0 } 

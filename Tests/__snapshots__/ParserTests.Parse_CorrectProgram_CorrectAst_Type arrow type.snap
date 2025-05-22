@@ -1,0 +1,26 @@
+﻿{
+  "$type": "Logical.Ast.Nodes.Production, Logical.Ast",
+  "ArgumentType": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "Type",
+    "Annotation": null
+  },
+  "ResultType": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "Type",
+    "Annotation": null
+  },
+  "VariableName": null,
+  "Body": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "Type",
+    "Annotation": null
+  },
+  "Type": {
+    "$type": "Logical.Ast.Nodes.Variable, Logical.Ast",
+    "Name": "Type",
+    "Annotation": null
+  },
+  "IsUnbound": false,
+  "Annotation": null
+}
