@@ -117,6 +117,11 @@ public class Compiler : FullAstVisitor<int, CompiledSubtree>
         return new CompiledSubtree(new Variable(), references);
     }
 
+    protected override CompiledSubtree OnVariableNotFoundError(Ast.Nodes.Variable node)
+    {
+        throw new NotImplementedException();
+    }
+
     protected override int CreateBindingData()
     {
         return 0;

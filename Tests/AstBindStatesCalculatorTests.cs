@@ -16,10 +16,11 @@ public class AstBindStatesCalculatorTests
         astBindStatesCalculator.Calculate(ast);
         ast.IsUnbound.Should().Be(false);
     }
+    
     [Fact]
     public void CalcAstBindStates_Unbound()
     {
-        var ast = new Abstraction("a", new DecimalLiteral("1"));
+        var ast = new Abstraction("a", new Variable("b"));
         ast.IsUnbound.Should().Be(false);
         
         var astBindStatesCalculator = new AstBindStatesCalculator();

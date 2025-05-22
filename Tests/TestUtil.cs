@@ -24,11 +24,16 @@ public static class TestUtil
 
     public static Logical.Model.Node Compile(Node ast)
     {
-        var augmentedAst = AugmentAst(ast);
         var astBindStatesCalculator = new AstBindStatesCalculator();
-        astBindStatesCalculator.Calculate(augmentedAst);
+        astBindStatesCalculator.Calculate(ast);
         var compiler = new Compiler();
-        var model = compiler.Compile(augmentedAst);
+        var model = compiler.Compile(ast);
         return model.Node;
+    }
+
+    public static Logical.Model.Node CompileWithDecimals(Node ast)
+    {
+        var augmentedAst = AugmentAst(ast);
+        return Compile(augmentedAst);
     }
 }

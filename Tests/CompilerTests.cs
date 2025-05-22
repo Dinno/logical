@@ -10,7 +10,7 @@ public class CompilerTests
     {
         var ast = new DecimalLiteral("0");
 
-        var result = TestUtil.Compile(ast);
+        var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
     }
@@ -20,7 +20,7 @@ public class CompilerTests
     {
         var ast = new DecimalLiteral("1");
         
-        var result = TestUtil.Compile(ast);
+        var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
     }
@@ -30,7 +30,7 @@ public class CompilerTests
     {
         var ast = new DecimalLiteral("-1");
         
-        var result = TestUtil.Compile(ast);
+        var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
     }
@@ -40,42 +40,30 @@ public class CompilerTests
     {
         var ast = new DecimalLiteral("2");
         
-        var result = TestUtil.Compile(ast);
+        var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
     }
 
-    // [Fact]
-    // public void Compiler_AbstractionWithNumberOne()
-    // {
-    //     var ast = new Abstraction("a", new DecimalLiteral("1"));
-    //     ast.IsUnbound.Should().Be(false);
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
+    [Fact]
+    public void Compiler_AbstractionWithNumberOne()
+    {
+        var ast = new Abstraction("a", new DecimalLiteral("1"));
 
-    //     Snapshot.Match(model.Node);
-    // }
+        var result = TestUtil.CompileWithDecimals(ast);
 
-    // [Fact]
-    // public void Compiler_AbstractionWithNumberTwo()
-    // {
-    //     var ast = new Abstraction("a", new DecimalLiteral("2"));
-    //     ast.IsUnbound.Should().Be(false);
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
+        Snapshot.Match(result);
+    }
 
-    //     Snapshot.Match(model.Node);
-    // }
+    [Fact]
+    public void Compiler_AbstractionWithVar()
+    {
+        var ast = new Abstraction("a", new Variable("a"));
 
-    // [Fact]
-    // public void Compiler_AbstractionWithVar()
-    // {
-    //     var ast = new Abstraction("a", new Variable("a"));
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
+        var result = TestUtil.Compile(ast);
 
-    //     Snapshot.Match(model.Node);
-    // }
+        Snapshot.Match(result);
+    }
 
     // [Fact]
     // public void Compiler_Variable()

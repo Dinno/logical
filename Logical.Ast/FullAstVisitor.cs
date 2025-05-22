@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Logical.Ast.Nodes;
 
 namespace Logical.Ast;
 
@@ -80,14 +81,15 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
 
     public TNode Visit(Nodes.Variable node)
     {
-        var varList = _variables[node.Name];
-        return Variable(node, varList);
+        return _variables.TryGetValue(node.Name, out var varList)
+            ? Variable(node, varList)
+            : OnVariableNotFoundError(node);
     }
 
     public virtual TNode Visit(Nodes.DecimalLiteral node)
     {
         return node.IntegerBinary?.Visit(this) ?? OnDecimalLiteralError();
-    } 
+    }
 
     /// <summary>
     /// Is called when we go out of abstraction or production node.
@@ -133,6 +135,8 @@ public abstract class FullAstVisitor<TBinding, TNode> : IAstVisitor<TNode>
     /// <remarks>It should be taken into account that list of bindings may contain mixed
     /// abstraction and production bindings</remarks>
     protected virtual TNode Variable(Nodes.Variable node, List<BindingInfo<TBinding>> bindings) => default;
+
+    protected abstract TNode OnVariableNotFoundError(Variable node);
 
     protected virtual TBinding CreateBindingData() => default;
 

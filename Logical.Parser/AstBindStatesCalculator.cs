@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Logical.Ast;
+using Logical.Ast.Nodes;
 
 namespace Logical.Parser;
 
@@ -31,6 +32,11 @@ public class AstBindStatesCalculator : FullAstVisitor<int, int>
         binding.Data++;
         bindings[^1] = binding;
         return default;
+    }
+
+    protected override int OnVariableNotFoundError(Variable node)
+    {
+        return 0; // Ignore
     }
 
     protected override int OnDecimalLiteralError()
