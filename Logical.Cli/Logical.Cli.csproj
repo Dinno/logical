@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Logical.Ast\Logical.Ast.csproj" />
       <ProjectReference Include="..\Logical.Parser\Logical.Parser.csproj" />
     </ItemGroup>
 
