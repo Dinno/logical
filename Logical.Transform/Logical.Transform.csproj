@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Logical.Model\Logical.Model.csproj" />
+  </ItemGroup>
+
 </Project>

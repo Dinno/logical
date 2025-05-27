@@ -36,4 +36,9 @@ public static class TestUtil
         var augmentedAst = AugmentAst(ast);
         return Compile(augmentedAst);
     }
+
+    public static Logical.Model.Node CompileWithA(Node ast)
+    {
+        return Compile(new Abstraction("a", ast));
+    }
 }

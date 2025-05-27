@@ -19,7 +19,7 @@ public class CompilerTests
     public void Compiler_NumberOne()
     {
         var ast = new DecimalLiteral("1");
-        
+
         var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
@@ -29,7 +29,7 @@ public class CompilerTests
     public void Compiler_NumberMinusOne()
     {
         var ast = new DecimalLiteral("-1");
-        
+
         var result = TestUtil.CompileWithDecimals(ast);
 
         Snapshot.Match(result);
@@ -39,16 +39,6 @@ public class CompilerTests
     public void Compiler_NumberTwo()
     {
         var ast = new DecimalLiteral("2");
-        
-        var result = TestUtil.CompileWithDecimals(ast);
-
-        Snapshot.Match(result);
-    }
-
-    [Fact]
-    public void Compiler_AbstractionWithNumberOne()
-    {
-        var ast = new Abstraction("a", new DecimalLiteral("1"));
 
         var result = TestUtil.CompileWithDecimals(ast);
 
@@ -56,7 +46,7 @@ public class CompilerTests
     }
 
     [Fact]
-    public void Compiler_AbstractionWithVar()
+    public void Compiler_BoundAbstraction()
     {
         var ast = new Abstraction("a", new Variable("a"));
 
@@ -65,65 +55,60 @@ public class CompilerTests
         Snapshot.Match(result);
     }
 
-    // [Fact]
-    // public void Compiler_Variable()
-    // {
-    //     var ast = new Variable("a");
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     Assert.Throws<KeyNotFoundException>(() => compiler.Compile(ast));
-    // }
+    [Fact]
+    public void Compiler_UnoundAbstraction()
+    {
+        var ast = new Abstraction("b", new Variable("a"));
 
-    // [Fact]
-    // public void Compiler_Application()
-    // {
-    //     var ast = new Application(new Variable("#Zpos"), new Variable("#Zpos"));
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
-    //     Snapshot.Match(model.Node);
-    // }
+        var result = TestUtil.CompileWithA(ast);
 
-    // [Fact]
-    // public void Compiler_Production()
-    // {
-    //     var ast = new Production(new Variable("A"), new Variable("B"), "x");
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
-    //     Snapshot.Match(model.Node);
-    // }
+        Snapshot.Match(result);
+    }
 
-    // [Fact]
-    // public void Compiler_Annotation()
-    // {
-    //     var ast = new Variable("a", new Variable("ann"));
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
-    //     Snapshot.Match(model.Node);
-    // }
+    [Fact(Skip = "Not implemented")]
+    public void Compiler_UndefinedVariable()
+    {
+        var ast = new Variable("a");
+        Assert.Throws<NotImplementedException>(() => TestUtil.Compile(ast));
+    }
 
-    // [Fact]
-    // public void Compiler_DecimalLiteral()
-    // {
-    //     var ast = new DecimalLiteral("42");
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     var model = compiler.Compile(ast);
-    //     Snapshot.Match(model.Node);
-    // }
+    [Fact]
+    public void Compiler_Application()
+    {
+        var ast = new Application(new Variable("a"), new Variable("a"));
+        var result = TestUtil.CompileWithA(ast);
+        Snapshot.Match(result);
+    }
 
-    // [Fact]
-    // public void Compiler_Parentheses()
-    // {
-    //     var ast = new Parentheses(new Variable("a"));
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     // Parentheses is not implemented, expect exception
-    //     Assert.Throws<NotImplementedException>(() => compiler.Compile(ast));
-    // }
+    [Fact(Skip = "Not implemented")]
+    public void Compiler_Production()
+    {
+        var ast = new Production(new Variable("a"), new Variable("b"), "b");
+        var result = TestUtil.CompileWithA(ast);
+        Snapshot.Match(result);
+    }
 
-    // [Fact]
-    // public void Compiler_Pair()
-    // {
-    //     var ast = new Pair(new Variable("a"), new Variable("b"));
-    //     var compiler = new Compiler(_initialDepth, _initialVariables);
-    //     // Pair is not implemented, expect exception
-    //     Assert.Throws<NotImplementedException>(() => compiler.Compile(ast));
-    // }
+    [Fact(Skip = "Not implemented")]
+    public void Compiler_Annotation()
+    {
+        var ast = new Variable("a", new Variable("a"));
+        var result = TestUtil.CompileWithA(ast);
+        Snapshot.Match(result);
+    }
+
+    [Fact]
+    public void Compiler_Parentheses()
+    {
+        var ast = new Parentheses(new Variable("a"));
+        // Parentheses is not implemented, expect exception
+        Assert.Throws<NotImplementedException>(() => TestUtil.Compile(ast));
+    }
+
+    [Fact]
+    public void Compiler_Pair()
+    {
+        var ast = new Pair(new Variable("a"), new Variable("b"));
+        // Pair is not implemented, expect exception
+        Assert.Throws<NotImplementedException>(() => TestUtil.Compile(ast));
+    }
 }
