@@ -36,23 +36,67 @@ But on syntactical level it has additional constructions:
 
 ## Variables
 
-x, X, var1, \_a - alfa-numeric string (?) representing reference to variables with a given name. 
-x^ - this construction ('^' symbolizes vector) allows to capture all variables with the name 'x' visible in a given scope. It will generate model with list of values of those variables.
+x, X, var1, \_a - alfa-numeric string (?) representing reference to variables with a given name.
+x^ - this construction ('^' symbolizes vector) allows to capture all variables with the name 'x' visible in a given
+scope. It will generate model with list of values of those variables.
 
 ## Function declarations
 
 ### Examples
+
 `x => x`, `x, y => x * y`, `_ => null`, `x; y => x * y`, `(1, x) => x`
 
-### Semantic tree generation
-Simple function declaration generates abstraction annotated by name of declared variable. `x => x` converts to $(\lambda v)_{name("x")}$. Underline instead of variable name leads to removal of name annotation and makes resulting abstraction unboundable: `_ => null` $\rArr$ $\Lambda v$
+## Data type declarations
 
-Pattern in a left part of function definition leads to use of destructuring function in semantic tree. `x, y => x * y` $\rArr$ $(\lambda v)(v_0, v_1)$
+```
+data List T: Set 
+    | nil
+    | cons: T, List T;    
+```
+is equivalent to
+```
+inductive List (T: Set): Set 
+    | nil: List T
+    | cons: T -> List T -> List T;    
+```
+
+```
+data Tree
+    | node: Forest
+with Forest
+    | emptyForest
+    | consForest: Tree, Forest;
+```
+is equivalent to 
+```
+inductive Tree: Set
+    | node: Forest -> Tree
+with Forest: Set
+    | emptyForest: Forest
+    | consForest: Tree -> Forest -> Forest;
+```
+
+## Fixpoints
+
+```
+fix F
+```
+
+### Semantic tree generation
+
+Simple function declaration generates abstraction annotated by name of declared variable. `x => x` converts
+to $(\lambda v)_{name("x")}$. Underline instead of variable name leads to removal of name annotation and makes resulting
+abstraction unboundable: `_ => null` $\Rightarrow$ $\Lambda v$
+
+Pattern in a left part of function definition leads to use of destructuring function in semantic tree.
+`x, y => x * y` $\Rightarrow$ $(\lambda v)(v_0, v_1)$
 
 ## Function Applications
 
 `f 1`, `someFunction(1, x)` - Application of function to some value. In second example the
-value is tuple. Generates model: @apply(f, 1), @apply(someFunction, @tuple (@pair 1 x)) where @apply is function capable of pattern matching of function arguments. In conjunction with variable lists it allows to implement function overloading.
+value is tuple. Generates model: @apply(f, 1), @apply(someFunction, @tuple (@pair 1 x)) where @apply is function capable
+of pattern matching of function arguments. In conjunction with variable lists it allows to implement function
+overloading.
 
 ## Imports
 
@@ -60,6 +104,7 @@ Imports are done using special type of function which must always have constant 
 module1 = import "module1";
 
 ## Exports
+
 Exports mark variables to be included into structure which will become a module's value
 export f = x => x * x;
 Will be automatically converted into
