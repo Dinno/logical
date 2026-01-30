@@ -15,18 +15,18 @@ But on syntactical level it has additional constructions:
 
 ## Operators
 
-* +, -, *, /, % - arithmetics
-* ==, !=, <, <=, >, >= - comparison
-* [], . - indexers
+- +, -, \*, /, % - arithmetics
+- ==, !=, <, <=, >, >= - comparison
+- [], . - indexers
 
 ## Constructors
 
-* @{a: Int, b: String} - structure types
-* {a: 1, b: "2"} - structures
-* Int * String - tuple types
-* (2, "dd") - tuples
-* Int[] - array types
-* [2, 3, 4] - arrays
+- @{a: Int, b: String} - structure types
+- {a: 1, b: "2"} - structures
+- Int \* String - tuple types
+- (2, "dd") - tuples
+- Int[] - array types
+- [2, 3, 4] - arrays
 
 ## Literals
 
@@ -49,15 +49,17 @@ scope. It will generate model with list of values of those variables.
 ## Data type declarations
 
 ```
-data List T: Set 
+data List T: Set
     | nil
-    | cons: T, List T;    
+    | cons: T, List T;
 ```
+
 is equivalent to
+
 ```
-inductive List (T: Set): Set 
+inductive List (T: Set): Set
     | nil: List T
-    | cons: T -> List T -> List T;    
+    | cons: T -> List T -> List T;
 ```
 
 ```
@@ -67,7 +69,9 @@ with Forest
     | emptyForest
     | consForest: Tree, Forest;
 ```
-is equivalent to 
+
+is equivalent to
+
 ```
 inductive Tree: Set
     | node: Forest -> Tree
@@ -78,9 +82,15 @@ with Forest: Set
 
 ## Fixpoints
 
+The language allows to define Y-combinator. It is a function which allows to define recursive functions.
+As this function is not typeable in the dependently typed language, it is defined using untyped variant of the language.
+Y-combinator is defined in the standard library as follows:
+
 ```
-fix F
+yCombinator: (A -> B) -> B = untyped f => (x => f (x x)) (x => f (x x))
 ```
+
+'untyped' is a keyword which allows to define untyped expression.
 
 ### Semantic tree generation
 
@@ -106,10 +116,10 @@ module1 = import "module1";
 ## Exports
 
 Exports mark variables to be included into structure which will become a module's value
-export f = x => x * x;
+export f = x => x _ x;
 Will be automatically converted into
-f = x => x * x;
+f = x => x _ x;
 {f}
 To finally become:
-{f: x => x * x}
+{f: x => x \* x}
 In first version of the language exports are not needed, but should be added later.
