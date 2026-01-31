@@ -3,8 +3,8 @@ On the model level the language consists of following basic constructions:
 1. Variables (x)
 2. Function definitions (x => y)
 3. Function applications (x y)
-4. Types (TYPE)
-5. Productions (x -> y)
+4. Types (Prop, Set, Type 0 , Type 1...)
+5. Productions (x: T -> P)
 
 But on syntactical level it has additional constructions:
 
@@ -25,8 +25,8 @@ But on syntactical level it has additional constructions:
 - {a: 1, b: "2"} - structures
 - Int \* String - tuple types
 - (2, "dd") - tuples
-- Int[] - array types
-- [2, 3, 4] - arrays
+- Int[] - list types
+- [2, 3, 4] - lists
 
 ## Literals
 
