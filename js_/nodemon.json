@@ -1,6 +1,0 @@
-{
-    "watch": ["src"],
-    "ext": ".ts,.js,.pegjs",
-    "ignore": ["src/generated"],
-    "exec": "ts-node ./src/index.ts"
-  }

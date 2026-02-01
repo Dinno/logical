@@ -1,20 +1,8 @@
 # IDE
 .idea
+*.code-workspace
+*.sln.DotSettings.user
 
-# yarn 2
-.yarn
-.pnp.*
-
-# generated
-js/src/generated
-
-# build
-/build
-
-# docs
-/doc/out
-
-# C#
-
+# Build
 /**/obj/
 /**/bin/
