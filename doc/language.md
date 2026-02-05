@@ -13,6 +13,19 @@ But on syntactical level it has additional constructions:
 3. Literals
 4. Imports and exports
 
+## PureTS prototype (F#)
+
+Minimal Haskell-like surface syntax for the prototype:
+
+- `let x = expr in expr`
+- Lambdas: `\\x y -> expr`
+- Function application by space: `f x y`
+- Records: `{a = expr, b = expr}` and projection `expr.a`
+- Literals: numbers, booleans, strings
+
+IR uses de Bruijn indices and includes a literal layer for numbers/booleans/strings
+to keep prototyping practical. Encodings like Peano/Church remain optional.
+
 ## Operators
 
 - +, -, \*, /, % - arithmetics
