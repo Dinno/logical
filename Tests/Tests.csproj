@@ -28,6 +28,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Logical.Parser\Logical.Parser.csproj" />
+    <ProjectReference Include="..\PureTS.Parser\PureTS.Parser.fsproj" />
+    <ProjectReference Include="..\PureTS.IR\PureTS.IR.fsproj" />
+    <ProjectReference Include="..\PureTS.VM\PureTS.VM.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
